@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audi Twin Cup - Ultimate Training</title>
+    <style>
+        :root { --audi-red: #f1052d; --bg: #0b0b0b; --panel: #1a1a1a; --text: #e5e5e5; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 850px; }
+        .card { background: var(--panel); padding: 25px; border-radius: 8px; border-top: 5px solid var(--audi-red); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .timer-box { font-size: 1.5rem; font-weight: bold; color: var(--audi-red); border: 2px solid var(--audi-red); border-radius: 50%; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; }
+        .q-text { font-size: 1.2rem; margin: 20px 0; line-height: 1.5; min-height: 80px; font-weight: 500; color: #fff; }
+        .options { display: grid; gap: 12px; }
+        .opt-btn { background: #262626; border: 1px solid #3d3d3d; color: white; padding: 18px; text-align: left; cursor: pointer; transition: 0.2s; font-size: 1rem; border-radius: 4px; }
+        .opt-btn:hover:not(:disabled) { border-color: var(--audi-red); background: #333; }
+        .correct { background: #28a745 !important; border-color: #28a745 !important; }
+        .wrong { background: #dc3545 !important; border-color: #dc3545 !important; }
+        #feedback { margin-top: 25px; padding: 20px; background: #000; border-left: 4px solid var(--audi-red); display: none; }
+        .next-btn { background: var(--audi-red); color: white; border: none; padding: 15px; margin-top: 15px; cursor: pointer; font-weight: bold; width: 100%; text-transform: uppercase; border-radius: 4px; }
+        .progress-bar { height: 6px; background: #333; width: 100%; margin-top: 10px; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--audi-red); width: 0%; transition: 0.4s; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <div>
+                <strong style="letter-spacing: 1px; font-size: 1.2rem;">AUDI TWIN CUP 2026</strong>
+                <div id="progress-container" class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+            </div>
+            <div class="timer-box" id="timer">30</div>
+        </div>
+
+        <div id="quiz-ui">
+            <div id="q-number" style="color: var(--audi-red); font-weight: bold; font-family: monospace;">QUESTION 1/30</div>
+            <div class="q-text" id="q-text">Chargement...</div>
+            <div class="options" id="options"></div>
+
+            <div id="feedback">
+                <div id="result-title" style="font-weight: bold; margin-bottom: 5px;"></div>
+                <div id="rationale" style="font-size: 0.95rem; color: #bbb; line-height: 1.4;"></div>
+                <button class="next-btn" onclick="nextQuestion()">Question Suivante</button>
+            </div>
+        </div>
+        
+        <div id="final-screen" style="display:none; text-align: center; padding: 40px 0;">
+            <h2 style="font-size: 2.5rem; color: var(--audi-red);">SESSION TERMINÉE</h2>
+            <div id="final-score" style="font-size: 1.5rem; margin: 20px 0;"></div>
+            <button class="next-btn" onclick="location.reload()">Nouvelle session</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const questionsData = [
+
+
+{"id": 1, "q": "Origine du nom 'Audi' ?", "o": ["Auto Union Deutsche", "Traduction latine de Horch", "Nom de famille", "Invention pure"], "a": 1},
+{"id": 2, "q": "Quelles marques forment Auto Union (1932) ?", "o": ["Audi, VW, Horch, Wanderer", "Audi, DKW, Horch, Wanderer", "Audi, DKW, BMW, Wanderer", "Audi, Porsche, Horch, DKW"], "a": 1},
+{"id": 3, "q": "Code moteur 5 cylindres RS2 Avant ?", "o": ["AAN", "ABY", "ADU", "3B"], "a": 2},
+{"id": 4, "q": "Écurie rachetée pour le projet F1 2026 ?", "o": ["Williams", "Sauber", "Haas", "Alpine"], "a": 1},
+{"id": 5, "q": "Concept Audi à empattement variable ?", "o": ["Grandsphere", "Urbansphere", "Skysphere", "Activesphere"], "a": 2},
+{"id": 6, "q": "Quantité produite de l'A1 Quattro ?", "o": ["100", "256", "333", "500"], "a": 2},
+{"id": 7, "q": "Signification de l'acronyme 'ASF' ?", "o": ["Auto Super Fast", "Audi Space Frame", "Aluminum Steel Frame", "Advanced Safety Frame"], "a": 1},
+{"id": 8, "q": "Type de stockage hybride R18 e-tron (2012) ?", "o": ["Lithium-ion", "Supercondensateur", "Volant d'inertie", "Hydrogène"], "a": 2},
+{"id": 9, "q": "Designer de l'Audi TT originale ?", "o": ["Walter de Silva", "Freeman Thomas", "J Mays", "Peter Schreyer"], "a": 1},
+{"id": 10, "q": "Angle moteur V10 de la R8 ?", "o": ["60°", "72°", "90°", "105°"], "a": 2},
+{"id": 11, "q": "Code moteur V10 de la RS6 C6 ?", "o": ["BUH", "BWF", "BXA", "BUJ"], "a": 0},
+{"id": 12, "q": "Quelle voiture a introduit le Quattro en 1980 ?", "o": ["Audi 80", "Audi Quattro", "Audi 200", "Audi 100"], "a": 1},
+{"id": 13, "q": "Nom du système de stabilité hydraulique RS ?", "o": ["ESP", "DRC", "ABS", "EDL"], "a": 1},
+{"id": 14, "q": "Premier modèle Audi à feux laser ?", "o": ["R8 LMX", "A8 D4", "RS6 C7", "TT RS"], "a": 0},
+{"id": 15, "q": "Code châssis Audi Q7 I ?", "o": ["4L", "4M", "4F", "4E"], "a": 0},
+{"id": 16, "q": "Qui a gagné Pikes Peak 1987 pour Audi ?", "o": ["Michèle Mouton", "Stig Blomqvist", "Walter Röhrl", "Hannu Mikkola"], "a": 2},
+{"id": 17, "q": "Modèle avec boîte DSG en 2003 ?", "o": ["Audi A3", "Audi TT", "Audi A4", "Audi S6"], "a": 1},
+{"id": 18, "q": "Nom de la première hybride Audi (1997) ?", "o": ["e-tron", "Duo", "Hybrid Quattro", "EcoDrive"], "a": 1},
+{"id": 19, "q": "Régime maxi RS4 B7 ?", "o": ["7500", "8000", "8250", "8500"], "a": 2},
+{"id": 20, "q": "Puissance S8 Plus (D4) ?", "o": ["520", "560", "605", "630"], "a": 2},
+{"id": 21, "q": "Moteur Audi 90 IMSA GTO ?", "o": ["L4", "L5", "V6", "V8"], "a": 1},
+{"id": 22, "q": "Année victoire Le Mans 2000 ?", "o": ["1999", "2000", "2001", "2002"], "a": 1},
+{"id": 23, "q": "Cylindrée R10 TDI (2006) ?", "o": ["5.0L", "5.2L", "5.5L", "6.0L"], "a": 2},
+{"id": 24, "q": "Qu'est-ce que le 'Procon-ten' ?", "o": ["Freinage", "Sécurité volant", "Suspension", "Boîte"], "a": 1},
+{"id": 25, "q": "Designer Audi TT (1998) ?", "o": ["J Mays", "Walter de Silva", "Marc Lichte", "Chris Bangle"], "a": 0},
+{"id": 26, "q": "Code A3 (8L) ?", "o": ["8L", "8P", "8V", "8Y"], "a": 0},
+{"id": 27, "q": "Dernière victoire Le Mans TDI ?", "o": ["2011", "2012", "2013", "2014"], "a": 3},
+{"id": 28, "q": "Partenaire moteur F1 Audi ?", "o": ["Audi Racing", "Sauber", "Porsche", "Red Bull"], "a": 0},
+{"id": 29, "q": "Moteur RSQ (I, Robot) ?", "o": ["V8", "V10", "Électrique", "Céleste"], "a": 2},
+{"id": 30, "q": "Pneus IMSA GTO (largeur) ?", "o": ["300", "320", "340", "360"], "a": 3},
+{"id": 31, "q": "Siège Auto Union (1932) ?", "o": ["Ingolstadt", "Chemnitz", "Neckarsulm", "Munich"], "a": 1},
+{"id": 32, "q": "Vitesse records Type C (1937) ?", "o": ["350", "380", "406", "430"], "a": 2},
+{"id": 33, "q": "Code S3 8L (225ch) ?", "o": ["APY", "BAM", "APX", "AJQ"], "a": 1},
+{"id": 34, "q": "Défaut majeur Multitronic ?", "o": ["Poids", "Fiabilité", "Consommation", "Taille"], "a": 1},
+{"id": 35, "q": "Carrosserie Avus (1991) ?", "o": ["Acier", "Carbone", "Aluminium", "Fibre"], "a": 2},
+{"id": 36, "q": "Nom concept drone AI:TRAIL ?", "o": ["LightPath", "LightCompanion", "LightVision", "LightEye"], "a": 1},
+{"id": 37, "q": "Pilote F1 Audi 2026 ?", "o": ["Vettel", "Hülkenberg", "Schumacher", "Bottas"], "a": 1},
+{"id": 38, "q": "Année rachat Audi par VW ?", "o": ["1960", "1964", "1968", "1972"], "a": 1},
+{"id": 39, "q": "Code moteur 5 cylindres RR ?", "o": ["RR", "ADU", "AAN", "ABY"], "a": 0},
+{"id": 40, "q": "Poids A1 Quattro (kg) ?", "o": ["1200", "1300", "1400", "1500"], "a": 1},
+{"id": 41, "q": "Couleur R8 LMX ?", "o": ["Nardo", "Ara", "Daytona", "Misano"], "a": 1},
+{"id": 42, "q": "Système SQ7 (48V) ?", "o": ["Suspension", "Compresseur", "Freins", "Éclairage"], "a": 1},
+{"id": 43, "q": "Régime maxi V12 TDI (2006) ?", "o": ["4000", "5000", "6000", "7000"], "a": 1},
+{"id": 44, "q": "Concept SUV 2015 ?", "o": ["e-tron Q", "e-tron quattro", "Q-Concept", "Electric Q"], "a": 1},
+{"id": 45, "q": "Lieu R&D moteur F1 ?", "o": ["Neuburg", "Ingolstadt", "Berlin", "Le Mans"], "a": 0},
+{"id": 46, "q": "Code 2.5 TFSI 400ch ?", "o": ["CEPA", "DAZA", "CZGB", "DNWA"], "a": 1},
+{"id": 47, "q": "Code A8 1ère ?", "o": ["D2", "D3", "D4", "D5"], "a": 0},
+{"id": 48, "q": "Écart victoire Le Mans 2011 ?", "o": ["5s", "10s", "13.8s", "20s"], "a": 2},
+{"id": 49, "q": "Cylindrée V12 Auto Union ?", "o": ["4.0L", "6.0L", "8.0L", "10.0L"], "a": 1},
+{"id": 50, "q": "Concept cabriolet 1991 ?", "o": ["Quattro Spyder", "Avus", "TT", "Roadster"], "a": 0},
+{"id": 51, "q": "Code châssis de l'Audi TT de première génération (8N) ?", "o": ["8N", "8J", "FV", "8S"], "a": 0},
+{"id": 52, "q": "Quel moteur 5 cylindres équipe l'Audi TTRS (8J) ?", "o": ["CEPA", "DAZA", "BAM", "ADU"], "a": 0},
+{"id": 53, "q": "Quelle marque a fourni les turbos pour la RS2 ?", "o": ["KKK", "Garrett", "BorgWarner", "IHI"], "a": 0},
+{"id": 54, "q": "Nom de la plateforme électrique partagée avec Porsche ?", "o": ["J1", "MEB", "PPE", "MLB"], "a": 2},
+{"id": 55, "q": "Premier modèle Audi avec la calandre 'Singleframe' ?", "o": ["A8 D3 facelift", "A6 C6", "A4 B7", "TT MK2"], "a": 0},
+{"id": 56, "q": "Quelle ville abrite l'usine de production principale de l'Audi R8 ?", "o": ["Ingolstadt", "Neckarsulm", "Győr", "Brussels"], "a": 1},
+{"id": 57, "q": "Nom du système de traction intégrale sur moteurs transversaux ?", "o": ["Torsen", "Haldex", "Quattro Ultra", "Visco"], "a": 1},
+{"id": 58, "q": "Quel modèle Audi a inauguré le V8 TDI en 1997 ?", "o": ["A8", "A6", "Q7", "A4"], "a": 0},
+{"id": 59, "q": "Quelle était la puissance du moteur de l'Audi Sport Quattro S1 E2 (Groupe B) ?", "o": ["400 ch", "510 ch", "600 ch", "700 ch"], "a": 1},
+{"id": 60, "q": "Quel pilote a remporté le Dakar 2024 avec Audi ?", "o": ["Stéphane Peterhansel", "Carlos Sainz", "Mattias Ekström", "Lucas Cruz"], "a": 1},
+{"id": 61, "q": "Type de carrosserie de l'Audi A2 ?", "o": ["Berline", "Monospace", "Coupé", "SUV"], "a": 1},
+{"id": 62, "q": "Quelle technologie d'éclairage remplace les Matrix LED depuis 2020 ?", "o": ["Laser", "OLED", "Digital Matrix LED", "Xenon"], "a": 2},
+{"id": 63, "q": "Nom du studio de design principal Audi à Ingolstadt ?", "o": ["Audi Design Center", "Concept Design Munich", "Audi Studio", "Quattro GmbH"], "a": 0},
+{"id": 64, "q": "Quel était le code moteur du V8 4.2L de l'Audi RS4 B8 ?", "o": ["CFSA", "BNS", "BUH", "CGEA"], "a": 0},
+{"id": 65, "q": "Année du lancement de l'Audi Q7 ?", "o": ["2003", "2005", "2006", "2008"], "a": 2},
+{"id": 66, "q": "Quel est le diamètre des disques de frein en carbone-céramique sur une R8 V10 ?", "o": ["350mm", "380mm", "400mm", "420mm"], "a": 1},
+{"id": 67, "q": "Quelle marque a été fusionnée pour créer Audi NSU Auto Union AG ?", "o": ["NSU", "DKW", "Horch", "Wanderer"], "a": 0},
+{"id": 68, "q": "Nom de la première berline Audi 100 ?", "o": ["C1", "C2", "C3", "C4"], "a": 0},
+{"id": 69, "q": "Quelle est la particularité du moteur 2.0 TFSI 'EA888' ?", "o": ["Double injection", "Compresseur", "Turbo électrique", "Diesel"], "a": 0},
+{"id": 70, "q": "Quel modèle a popularisé le bleu 'Nogaro' ?", "o": ["RS2", "S4 B5", "RS6 C5", "TT RS"], "a": 0},
+{"id": 71, "q": "Nom de la suspension active haut de gamme Audi ?", "o": ["Active Suspension", "Air Suspension", "Adaptive Air Suspension", "Magnetic Ride"], "a": 2},
+{"id": 72, "q": "Quelle boîte équipe la R8 V10 S-tronic ?", "o": ["DL501", "DQ250", "DL800", "ZF8"], "a": 2},
+{"id": 73, "q": "Qui a conçu le style de l'Audi A6 C7 ?", "o": ["Walter de Silva", "Marc Lichte", "Stefan Sielaff", "J Mays"], "a": 2},
+{"id": 74, "q": "Code de l'Audi A4 B9 ?", "o": ["8K", "8W", "8E", "B6"], "a": 1},
+{"id": 75, "q": "Quel concept Audi 'Sphere' est un coupé ?", "o": ["Skysphere", "Grandsphere", "Urbansphere", "Activesphere"], "a": 0},
+{"id": 76, "q": "Puissance RS6 C8 Performance ?", "o": ["600", "630", "650", "680"], "a": 1},
+{"id": 77, "q": "Quel modèle a le moteur W12 ?", "o": ["A8", "Q7", "R8", "RS6"], "a": 0},
+{"id": 78, "q": "Lieu de l'usine Audi au Mexique ?", "o": ["Puebla", "San José Chiapa", "Mexico", "Monterrey"], "a": 1},
+{"id": 79, "q": "Type de transmission de l'Audi R8 LMS GT3 ?", "o": ["4RM", "Propulsion", "Traction", "Intégrale"], "a": 1},
+{"id": 80, "q": "Nom du logiciel de conduite autonome Audi ?", "o": ["zFAS", "Pilot", "AutoPilot", "DriveAssist"], "a": 0},
+{"id": 81, "q": "Date de création de la branche 'quattro GmbH' ?", "o": ["1980", "1983", "1985", "1990"], "a": 1},
+{"id": 82, "q": "Premier moteur turbo essence de série ?", "o": ["Audi 200", "Audi Quattro", "Audi 100 Turbo", "Audi 5000"], "a": 0},
+{"id": 83, "q": "Matériau principal châssis R8 ?", "o": ["Aluminium", "Acier", "Carbone", "Titane"], "a": 0},
+{"id": 84, "q": "Code moteur 1.8 Turbo 20V le plus puissant ?", "o": ["BAM", "APY", "AJQ", "APX"], "a": 0},
+{"id": 85, "q": "Quelle année Audi a-t-il rejoint le championnat DTM ?", "o": ["1990", "1992", "2000", "2004"], "a": 0},
+{"id": 86, "q": "Vitesse max A8 W12 (limitée) ?", "o": ["250", "280", "300", "320"], "a": 0},
+{"id": 87, "q": "Nom de la finition haut de gamme Audi ?", "o": ["Design", "S-line", "Exclusive", "Sport"], "a": 2},
+{"id": 88, "q": "Comment s'appelait l'Audi A3 électrique ?", "o": ["A3 e-tron", "A3 G-tron", "A3 Hybrid", "A3 Electric"], "a": 0},
+{"id": 89, "q": "Modèle avec moteur V10 FSI 5.2 ?", "o": ["RS6", "R8", "S8", "Q7"], "a": 1},
+{"id": 90, "q": "Quel constructeur a aidé pour le W12 ?", "o": ["Lamborghini", "Bugatti", "VW", "Porsche"], "a": 2},
+{"id": 91, "q": "Code de l'Audi RS6 C5 ?", "o": ["4B", "4F", "4G", "4K"], "a": 0},
+{"id": 92, "q": "Type de boîte de l'Audi A2 3L ?", "o": ["Auto", "Manuelle", "Robotisée", "CVT"], "a": 2},
+{"id": 93, "q": "Quelle Audi a un aileron rétractable ?", "o": ["TT", "A7", "R8", "A5"], "a": 0},
+{"id": 94, "q": "Nom du directeur design actuel ?", "o": ["Marc Lichte", "Walter de Silva", "Gary Telaid", "J Mays"], "a": 0},
+{"id": 95, "q": "Quel modèle utilise la plateforme MLB Evo ?", "o": ["A4 B9", "A3 8V", "Q2", "A1"], "a": 0},
+{"id": 96, "q": "Puissance Audi RS e-tron GT ?", "o": ["598", "646", "700", "750"], "a": 1},
+{"id": 97, "q": "Origine du nom 'quattro' ?", "o": ["4 roues motrices", "4 cylindres", "4ème modèle", "4 victoires"], "a": 0},
+{"id": 98, "q": "Quel moteur dans l'Audi S1 (2014) ?", "o": ["1.4 TFSI", "1.8 TFSI", "2.0 TFSI", "2.5 TFSI"], "a": 2},
+{"id": 99, "q": "Quelle est la capacité du réservoir A8 L W12 ?", "o": ["70L", "80L", "90L", "100L"], "a": 2},
+{"id": 100, "q": "Qui a fondé Auto Union ?", "o": ["Horch", "DKW", "Audi", "État"], "a": 0},
+{"id": 101, "q": "Code moteur 5 cylindres de l'Audi RS3 8V (367ch) ?", "o": ["CZGB", "DAZA", "CEPA", "DNWA"], "a": 0},
+{"id": 102, "q": "Nom du système de freinage électrique introduit sur les e-tron ?", "o": ["iBrake", "Electro-Mechanical Brake", "e-Booster", "Servo-free"], "a": 1},
+{"id": 103, "q": "Quel modèle Audi a été le premier à proposer la direction intégrale ?", "o": ["A8 D4", "A6 C7", "R8 V10 Plus", "Q7 4M"], "a": 0},
+{"id": 104, "q": "Dans quelle ville se trouve l'usine Audi qui produit l'A3 ?", "o": ["Ingolstadt", "Neckarsulm", "Győr", "Brussels"], "a": 0},
+{"id": 105, "q": "Quel est le code moteur du V8 4.0 TFSI de l'Audi S6 C7 ?", "o": ["CEUC", "CRDB", "CTGA", "CWUB"], "a": 0},
+{"id": 106, "q": "Quelle voiture a été la première au monde à utiliser le volant d'inertie en compétition ?", "o": ["R18 e-tron", "R10 TDI", "R8 LMP", "R15 TDI"], "a": 0},
+{"id": 107, "q": "Que signifie l'acronyme 'S-tronic' ?", "o": ["Séquentielle électronique", "Double embrayage", "Système transmission", "Super transmission"], "a": 1},
+{"id": 108, "q": "Quel designer a créé l'Audi A2 ?", "o": ["Luc Donckerwolke", "Peter Schreyer", "Walter de Silva", "Marc Lichte"], "a": 1},
+{"id": 109, "q": "Quelle Audi a été utilisée dans le film 'Ronin' (1998) ?", "o": ["S8 D2", "A8 D2", "S4 B5", "A6 C5"], "a": 0},
+{"id": 110, "q": "Quel modèle Audi a inauguré le premier V8 bi-turbo ?", "o": ["RS6 C5", "RS6 C6", "RS4 B5", "S8 D3"], "a": 0},
+{"id": 111, "q": "Quelle était la fonction du 'Différentiel Sport' ?", "o": ["Répartir le couple entre roues", "Réduire le poids", "Augmenter la puissance", "Refroidir le moteur"], "a": 0},
+{"id": 112, "q": "Code moteur 1.8 Turbo 150ch ?", "o": ["AEB", "BAM", "AJQ", "APX"], "a": 0},
+{"id": 113, "q": "Quel est le nom du système de recharge sans fil Audi ?", "o": ["Audi Wireless Charging", "Induction Charging", "e-Power", "Power Transfer"], "a": 0},
+{"id": 114, "q": "Année du lancement de la R8 de route ?", "o": ["2005", "2006", "2007", "2008"], "a": 2},
+{"id": 115, "q": "Quelle Audi a un V10 atmosphérique ?", "o": ["R8", "RS6", "S8", "Q7"], "a": 0},
+{"id": 116, "q": "Quel est le code de l'Audi RS4 B5 ?", "o": ["8D", "8E", "8K", "8W"], "a": 0},
+{"id": 117, "q": "Quel type de train arrière pour l'A3 8V ?", "o": ["Multi-bras", "Essieu rigide", "Barre torsion", "Indépendant"], "a": 0},
+{"id": 118, "q": "Quelle est la particularité des disques 'Wave' ?", "o": ["Forme ondulée", "Refroidissement", "Poids réduit", "Design"], "a": 0},
+{"id": 119, "q": "Quel modèle Audi possède un moteur central ?", "o": ["R8", "TT", "A5", "A3"], "a": 0},
+{"id": 120, "q": "Nom du pack tout-terrain Audi ?", "o": ["Allroad", "Offroad", "Cross", "Outdoor"], "a": 0},
+{"id": 121, "q": "Code châssis TT 8S ?", "o": ["8N", "8J", "FV", "8S"], "a": 2},
+{"id": 122, "q": "Moteur Audi 50 ?", "o": ["L4", "L5", "V6", "V8"], "a": 0},
+{"id": 123, "q": "Quelle Audi a un moteur W16 ?", "o": ["Rosemeyer", "R8", "RS6", "A8"], "a": 0},
+{"id": 124, "q": "Type de carrosserie A7 ?", "o": ["Sportback", "Berline", "Coupé", "SUV"], "a": 0},
+{"id": 125, "q": "Année victoire Pikes Peak Mouton ?", "o": ["1982", "1985", "1987", "1988"], "a": 1},
+{"id": 126, "q": "Code moteur 2.0 TFSI 230ch ?", "o": ["CHHB", "EA888", "CDL", "BPY"], "a": 0},
+{"id": 127, "q": "Marque rachetée en 1964 par VW ?", "o": ["Audi", "NSU", "DKW", "Horch"], "a": 0},
+{"id": 128, "q": "Type de transmission RS3 ?", "o": ["Quattro", "Haldex", "Torsen", "Propulsion"], "a": 0},
+{"id": 129, "q": "Code châssis A4 B8 ?", "o": ["8K", "8W", "B7", "8E"], "a": 0},
+{"id": 130, "q": "Nom technologie feux Audi ?", "o": ["Matrix LED", "Xenon", "Halogène", "Laser"], "a": 0},
+{"id": 131, "q": "Quelle Audi a été la première 100% électrique de série ?", "o": ["e-tron", "A3 e-tron", "R8 e-tron", "Q4 e-tron"], "a": 0},
+{"id": 132, "q": "Quel moteur dans l'A2 1.2 TDI ?", "o": ["L3", "L4", "V6", "V8"], "a": 0},
+{"id": 133, "q": "Cylindrée moteur RS6 V10 ?", "o": ["5.0L", "5.2L", "4.2L", "6.0L"], "a": 0},
+{"id": 134, "q": "Quelle Audi a un toit targa ?", "o": ["R8 Spyder", "TT Roadster", "A3 Cabriolet", "S5 Cabrio"], "a": 0},
+{"id": 135, "q": "Qui a conçu l'Audi 100 C3 ?", "o": ["Hartmut Warkuss", "Walter de Silva", "Marc Lichte", "J Mays"], "a": 0},
+{"id": 136, "q": "Code châssis A6 C7 ?", "o": ["4G", "4F", "4B", "4A"], "a": 0},
+{"id": 137, "q": "Moteur Audi Q5 hybride ?", "o": ["2.0 TFSI", "3.0 TDI", "1.4 TFSI", "2.5 TFSI"], "a": 0},
+{"id": 138, "q": "Nom de la suspension RS ?", "o": ["DRC", "Magnetic Ride", "Air", "Sport"], "a": 0},
+{"id": 139, "q": "Modèle Audi avec W12 ?", "o": ["A8", "S8", "Q7", "A6"], "a": 0},
+{"id": 140, "q": "Code moteur R8 V8 ?", "o": ["BYH", "BUH", "BNS", "CDL"], "a": 0},
+{"id": 141, "q": "Quelle Audi a des portières papillon ?", "o": ["R8 e-tron", "TT", "A8", "Q7"], "a": 0},
+{"id": 142, "q": "Nom moteur 2.5 TFSI (400ch) ?", "o": ["DAZA", "CEPA", "CZGB", "DNWA"], "a": 0},
+{"id": 143, "q": "Quelle Audi a été championne du monde rallye ?", "o": ["Quattro", "S1", "200", "A3"], "a": 0},
+{"id": 144, "q": "Code châssis A5 B8 ?", "o": ["8T", "8F", "8W", "8K"], "a": 0},
+{"id": 145, "q": "Moteur dans l'Audi TT 1.8 ?", "o": ["L4", "V6", "V8", "V10"], "a": 0},
+{"id": 146, "q": "Date lancement Audi A4 ?", "o": ["1994", "1996", "1998", "2000"], "a": 0},
+{"id": 147, "q": "Nom plateforme A1 ?", "o": ["MQB", "MLB", "PQ25", "MEB"], "a": 2},
+{"id": 148, "q": "Type frein R8 ?", "o": ["Céramique", "Acier", "Carbone", "Fonte"], "a": 0},
+{"id": 149, "q": "Modèle Audi avec compresseur ?", "o": ["S4 B8", "A4 B9", "RS6", "R8"], "a": 0},
+{"id": 150, "q": "Code moteur 1.9 TDI ?", "o": ["ALH", "BAM", "ADU", "AAN"], "a": 0},
+{"id": 151, "q": "Quel modèle Audi a inauguré la calandre Singleframe en 2004 ?", "o": ["A8 D3", "A6 C6", "A4 B7", "A3 8P"], "a": 0},
+{"id": 152, "q": "Quel est le nom de la division sportive actuelle d'Audi ?", "o": ["Audi Sport GmbH", "Quattro GmbH", "Audi Performance", "Audi Racing"], "a": 0},
+{"id": 153, "q": "Quelle Audi a été surnommée 'la berline la plus aérodynamique du monde' en 1982 ?", "o": ["Audi 80", "Audi 100", "Audi 200", "Audi 5000"], "a": 1},
+{"id": 154, "q": "Quel moteur équipe l'Audi A8 D2 W12 ?", "o": ["5.6L", "6.0L", "6.3L", "6.5L"], "a": 1},
+{"id": 155, "q": "Quelle était la particularité de la boîte 'Multitronic' ?", "o": ["Double embrayage", "Variateur continu", "Robotisée simple", "Manuelle pilotée"], "a": 1},
+{"id": 156, "q": "Quel est le code moteur du 2.0 TDI 170 ch ?", "o": ["CBBB", "BKD", "BKP", "CFGB"], "a": 0},
+{"id": 157, "q": "Comment se nomme le système Quattro piloté par électronique sur les modèles électriques ?", "o": ["e-Quattro", "Electric Quattro", "Quattro e-tron", "Quattro ultra"], "a": 0},
+{"id": 158, "q": "Quel est le nom du studio de design situé à Santa Monica ?", "o": ["Audi Design Center", "Audi Concept Lab", "Audi Design California", "Audi US Studio"], "a": 2},
+{"id": 159, "q": "Quelle Audi est construite sur la plateforme MLB Evo ?", "o": ["Q7 4M", "A3 8V", "Q2", "TT"], "a": 0},
+{"id": 160, "q": "Quelle est la puissance de l'Audi RS6 C7 Performance ?", "o": ["560 ch", "605 ch", "630 ch", "650 ch"], "a": 1},
+{"id": 161, "q": "Quel système Audi gère le mode de conduite et la suspension ?", "o": ["Drive Select", "Mode Sport", "Comfort Mode", "Dynamic Chassis"], "a": 0},
+{"id": 162, "q": "Quelle Audi possède des feux arrière OLED ?", "o": ["TT RS", "A8 D5", "R8 V10", "A7 C8"], "a": 0},
+{"id": 163, "q": "Quelle marque Auto Union était spécialisée dans les motos ?", "o": ["DKW", "Wanderer", "Horch", "Audi"], "a": 0},
+{"id": 164, "q": "Quel est le code moteur du 3.0 TDI 240 ch ?", "o": ["CAPA", "CCWA", "CDUC", "CRTD"], "a": 1},
+{"id": 165, "q": "Quelle Audi a un V8 atmosphérique 4.2L ?", "o": ["RS4 B7", "S5 B8", "A6 C6", "RS6 C5"], "a": 0},
+{"id": 166, "q": "Nom du concept tout-terrain Audi 2019 ?", "o": ["AI:TRAIL", "AI:ME", "AI:RACE", "AI:ICON"], "a": 0},
+{"id": 167, "q": "Quelle Audi a une carrosserie en aluminium 'Space Frame' ?", "o": ["A8 D2", "A6 C5", "A4 B6", "TT"], "a": 0},
+{"id": 168, "q": "Quelle est la particularité du moteur 2.0 TFSI 200 ch ?", "o": ["Injection directe", "Carburateur", "Diesel", "Atmo"], "a": 0},
+{"id": 169, "q": "Nom de la première berline Audi à moteur 5 cylindres ?", "o": ["Audi 100 5E", "Audi 80", "Audi 200", "Audi Quattro"], "a": 0},
+{"id": 170, "q": "Quel modèle Audi a été restylé avec des phares 'Matrix' ?", "o": ["A8 D4", "A6 C7", "Q7", "A4 B8"], "a": 0},
+{"id": 171, "q": "Puissance Audi R8 V10 standard (1ère gén) ?", "o": ["420 ch", "525 ch", "550 ch", "610 ch"], "a": 1},
+{"id": 172, "q": "Quelle Audi a un moteur central arrière ?", "o": ["R8", "TT", "A5", "S4"], "a": 0},
+{"id": 173, "q": "Code châssis A8 D4 ?", "o": ["4H", "4E", "D2", "D5"], "a": 0},
+{"id": 174, "q": "Type de carrosserie de l'Audi A5 Sportback ?", "o": ["Coupé", "Berline", "Sportback", "Cabriolet"], "a": 2},
+{"id": 175, "q": "Quelle Audi utilise le moteur W12 6.3L ?", "o": ["A8 D4", "A8 D3", "Q7", "R8"], "a": 0},
+{"id": 176, "q": "Quel modèle Audi a inauguré le 2.5 TFSI 5 cylindres ?", "o": ["TT RS 8J", "RS3 8P", "Q3 RS", "RS3 8V"], "a": 0},
+{"id": 177, "q": "Nom du système Quattro avec différentiel sport ?", "o": ["Quattro avec diff sport", "Quattro", "Torsen", "Haldex"], "a": 0},
+{"id": 178, "q": "Quelle Audi a des portières sans cadre (frameless) ?", "o": ["A5", "A3", "Q5", "A4"], "a": 0},
+{"id": 179, "q": "Puissance S1 (2014) ?", "o": ["200 ch", "231 ch", "250 ch", "280 ch"], "a": 1},
+{"id": 180, "q": "Quelle Audi a une suspension pneumatique ?", "o": ["A8", "A3", "TT", "R8"], "a": 0},
+{"id": 181, "q": "Année du lancement Audi Q3 ?", "o": ["2010", "2011", "2012", "2013"], "a": 1},
+{"id": 182, "q": "Nom moteur dans l'A1 Quattro ?", "o": ["CDLH", "BAM", "ADU", "CEPA"], "a": 0},
+{"id": 183, "q": "Code châssis A6 C8 ?", "o": ["4A", "4F", "4G", "F2"], "a": 3},
+{"id": 184, "q": "Quelle Audi est une électrique dédiée ?", "o": ["e-tron GT", "A3 e-tron", "Q7 e-tron", "A6 e-tron"], "a": 0},
+{"id": 185, "q": "Type de transmission RS6 ?", "o": ["Quattro", "Haldex", "Torsen", "Propulsion"], "a": 0},
+{"id": 186, "q": "Quelle Audi a été championne DTM en 2004 ?", "o": ["A4 DTM", "TT DTM", "R8 DTM", "RS4 DTM"], "a": 0},
+{"id": 187, "q": "Nom du pack extérieur Audi ?", "o": ["S-line", "Black Edition", "RS", "Competition"], "a": 0},
+{"id": 188, "q": "Code châssis Q5 I ?", "o": ["8R", "FY", "8K", "4L"], "a": 0},
+{"id": 189, "q": "Moteur dans l'Audi TT 3.2 ?", "o": ["VR6", "L4", "V6 Atmo", "V8"], "a": 0},
+{"id": 190, "q": "Type de boîte R8 V8 ?", "o": ["R-tronic", "S-tronic", "Manuelle", "Multitronic"], "a": 0},
+{"id": 191, "q": "Quelle Audi a un aileron fixe ?", "o": ["TTRS", "A3", "A4", "Q5"], "a": 0},
+{"id": 192, "q": "Nom finition cuir Audi ?", "o": ["Nappa", "Valcona", "Alcantara", "Tissu"], "a": 0},
+{"id": 193, "q": "Quel moteur pour l'Audi R8 GT ?", "o": ["V10", "V8", "W12", "V10 Plus"], "a": 0},
+{"id": 194, "q": "Code châssis A7 C7 ?", "o": ["4G8", "4F", "4H", "F2"], "a": 0},
+{"id": 195, "q": "Quelle Audi est un SUV coupé ?", "o": ["Q8", "Q7", "Q5", "Q3"], "a": 0},
+{"id": 196, "q": "Date lancement Audi R8 ?", "o": ["2006", "2007", "2008", "2009"], "a": 1},
+{"id": 197, "q": "Nom système info-divertissement Audi ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 198, "q": "Quelle Audi a un moteur 1.4 TFSI ?", "o": ["A1", "A8", "R8", "RS6"], "a": 0},
+{"id": 199, "q": "Code châssis A4 B6 ?", "o": ["8E", "8K", "B5", "B7"], "a": 0},
+{"id": 200, "q": "Qui a fondé Horch ?", "o": ["August Horch", "Ferdinand Porsche", "Karl Benz", "VW"], "a": 0},
+{"id": 201, "q": "Quel modèle Audi a inauguré le système 'Quattro Ultra' ?", "o": ["A4 B9", "Q5 FY", "A3 8V", "Q7 4M"], "a": 0},
+{"id": 202, "q": "Quelle est la particularité du moteur 2.5 TFSI de l'Audi TT RS (8S) ?", "o": ["Bloc en aluminium", "Bloc en fonte", "Double turbo", "Hybride"], "a": 0},
+{"id": 203, "q": "Quel designer est responsable du design 'Singleframe' original ?", "o": ["Walter de Silva", "Marc Lichte", "Stefan Sielaff", "J Mays"], "a": 0},
+{"id": 204, "q": "Nom du système de lecture des panneaux de signalisation Audi ?", "o": ["Traffic Sign Recognition", "Road Sign Assist", "Sign View", "Speed Assist"], "a": 0},
+{"id": 205, "q": "Quel moteur équipe l'Audi S5 8T (1ère gen) ?", "o": ["4.2 V8", "3.0 TFSI", "3.0 TDI", "2.0 TFSI"], "a": 0},
+{"id": 206, "q": "Quelle Audi a un aileron arrière en fibre de carbone fixe ?", "o": ["TT RS 8S", "RS3 8V", "RS6 C7", "S5"], "a": 0},
+{"id": 207, "q": "Quel est le nom de l'interface tactile Audi lancée en 2017 ?", "o": ["MMI Touch Response", "Virtual Cockpit", "Audi Connect", "Smart Display"], "a": 0},
+{"id": 208, "q": "Quelle Audi utilise le moteur V8 4.0 TFSI avec désactivation des cylindres ?", "o": ["S6 C7", "RS6 C7", "S8 D4", "A7 C7"], "a": 0},
+{"id": 209, "q": "Quel est le code moteur du 3.0 TDI 313 ch (Biturbo) ?", "o": ["CGQB", "CDUD", "CCWA", "CRTD"], "a": 0},
+{"id": 210, "q": "Quelle est la capacité maximale de la batterie sur l'Audi e-tron 55 ?", "o": ["85 kWh", "95 kWh", "105 kWh", "75 kWh"], "a": 1},
+{"id": 211, "q": "Comment s'appelle le système de phares Audi avec des micro-miroirs ?", "o": ["DMD Matrix", "OLED", "Laser", "Xenon"], "a": 0},
+{"id": 212, "q": "Quelle Audi a été la première à proposer le 'Virtual Cockpit' ?", "o": ["TT 8S", "A4 B9", "Q7 4M", "R8 4S"], "a": 0},
+{"id": 213, "q": "Quelle était la puissance du V10 de la R8 V10 Plus (1ère gén) ?", "o": ["525 ch", "550 ch", "570 ch", "610 ch"], "a": 1},
+{"id": 214, "q": "Quel modèle Audi possède un moteur 3 cylindres ?", "o": ["A1 25 TFSI", "A3", "Q2", "A2"], "a": 0},
+{"id": 215, "q": "Quelle Audi a été utilisée par le transporteur (Jason Statham) ?", "o": ["A8 D2", "S8 D2", "A8 D3", "S8 D3"], "a": 3},
+{"id": 216, "q": "Code moteur 1.4 TFSI (122ch) ?", "o": ["CAXA", "CZCA", "CHPB", "CMBA"], "a": 0},
+{"id": 217, "q": "Nom du logiciel de conduite Audi ?", "o": ["zFAS", "Pilot", "Driver Assist", "AutoPilot"], "a": 0},
+{"id": 218, "q": "Type de carrosserie A3 Sportback ?", "o": ["Compacte 5 portes", "Berline", "Coupé", "SUV"], "a": 0},
+{"id": 219, "q": "Quelle Audi a un moteur V6 TDI 3.0 ?", "o": ["Q7", "A4", "A6", "Tous les cités"], "a": 3},
+{"id": 220, "q": "Puissance S4 B9 ?", "o": ["333 ch", "354 ch", "380 ch", "400 ch"], "a": 1},
+{"id": 221, "q": "Date lancement Q5 ?", "o": ["2008", "2009", "2010", "2011"], "a": 0},
+{"id": 222, "q": "Nom moteur 2.0 TFSI 252ch ?", "o": ["CYRB", "DLBA", "EA888", "CJSB"], "a": 0},
+{"id": 223, "q": "Quelle Audi est construite sur la plateforme MEB ?", "o": ["Q4 e-tron", "e-tron GT", "Q8 e-tron", "R8"], "a": 0},
+{"id": 224, "q": "Code châssis S1 (8X) ?", "o": ["8X", "8V", "8Y", "8P"], "a": 0},
+{"id": 225, "q": "Moteur dans l'Audi S3 8V ?", "o": ["2.0 TFSI", "2.5 TFSI", "1.8 TFSI", "3.0 V6"], "a": 0},
+{"id": 226, "q": "Type frein R8 LMS ?", "o": ["Acier", "Céramique", "Fonte", "Carbone"], "a": 0},
+{"id": 227, "q": "Nom du concept Audi 2017 ?", "o": ["Icon", "Grandsphere", "Urbansphere", "Skysphere"], "a": 0},
+{"id": 228, "q": "Code A4 B7 ?", "o": ["8E", "8K", "B6", "B8"], "a": 0},
+{"id": 229, "q": "Quelle Audi a un toit panoramique ?", "o": ["A3", "A8", "Q7", "Tous les cités"], "a": 3},
+{"id": 230, "q": "Type de boîte R8 ?", "o": ["Manuelle", "S-tronic", "R-tronic", "Tous les cités"], "a": 3},
+{"id": 231, "q": "Quelle Audi a un moteur 4 cylindres ?", "o": ["A4", "A3", "A1", "Tous les cités"], "a": 3},
+{"id": 232, "q": "Puissance RS4 B9 ?", "o": ["450 ch", "420 ch", "480 ch", "500 ch"], "a": 0},
+{"id": 233, "q": "Quel moteur pour l'Audi S7 ?", "o": ["4.0 V8", "2.9 V6", "3.0 TDI", "V10"], "a": 1},
+{"id": 234, "q": "Code moteur 1.6 TDI ?", "o": ["CAYC", "CLHA", "CRKB", "CFFB"], "a": 0},
+{"id": 235, "q": "Quelle Audi est un cabriolet ?", "o": ["A3", "A5", "TT", "Tous les cités"], "a": 3},
+{"id": 236, "q": "Nom finition Audi ?", "o": ["Design", "Sport", "Business", "Tous les cités"], "a": 3},
+{"id": 237, "q": "Date lancement Audi A1 ?", "o": ["2010", "2011", "2012", "2013"], "a": 0},
+{"id": 238, "q": "Moteur Audi A1 1.4 ?", "o": ["CAXA", "BAM", "ADU", "AAN"], "a": 0},
+{"id": 239, "q": "Quelle Audi a un système hybride ?", "o": ["A3", "Q5", "A8", "Tous les cités"], "a": 3},
+{"id": 240, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 241, "q": "Quelle Audi a 7 places ?", "o": ["Q7", "Q5", "A4", "A3"], "a": 0},
+{"id": 242, "q": "Code châssis A8 D5 ?", "o": ["4N", "4H", "4E", "D4"], "a": 0},
+{"id": 243, "q": "Quelle Audi est un crossover ?", "o": ["Q2", "Q3", "Q5", "Tous les cités"], "a": 3},
+{"id": 244, "q": "Nom du pack RS ?", "o": ["RS", "Sport", "Design", "Black"], "a": 0},
+{"id": 245, "q": "Moteur Audi RS6 C8 ?", "o": ["4.0 V8", "V10", "W12", "V6"], "a": 0},
+{"id": 246, "q": "Code moteur 2.0 TDI 150ch ?", "o": ["CRLB", "CUNA", "BAM", "ADU"], "a": 0},
+{"id": 247, "q": "Quelle Audi a un moteur central ?", "o": ["R8", "Concept", "Avus", "Tous les cités"], "a": 3},
+{"id": 248, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 249, "q": "Date lancement Audi RS3 ?", "o": ["2011", "2012", "2013", "2014"], "a": 0},
+{"id": 250, "q": "Qui a fondé Wanderer ?", "o": ["Winkler", "Horch", "Audi", "VW"], "a": 0},
+{"id": 251, "q": "Quel modèle Audi a inauguré le moteur V10 5.2 FSI ?", "o": ["S6 C6", "R8 V10", "S8 D3", "RS6 C6"], "a": 0},
+{"id": 252, "q": "Quelle est la puissance du moteur 2.0 TFSI de l'Audi S3 8P (Facelift) ?", "o": ["256 ch", "265 ch", "272 ch", "280 ch"], "a": 1},
+{"id": 253, "q": "Quel ingénieur a dirigé le développement du système Quattro ?", "o": ["Jörg Bensinger", "Walter Röhrl", "Ferdinand Piëch", "Ludwig Kraus"], "a": 0},
+{"id": 254, "q": "Quel modèle Audi a été le premier à utiliser un châssis en aluminium ?", "o": ["A8 D2", "A2", "TT", "R8"], "a": 0},
+{"id": 255, "q": "Quelle Audi a un moteur V6 Biturbo 2.7 ?", "o": ["S4 B5", "RS4 B5", "A6 C5", "Tous les cités"], "a": 3},
+{"id": 256, "q": "Quelle était la fonction du moteur AAN ?", "o": ["5 cylindres Turbo", "4 cylindres Atmo", "V6 Diesel", "V8 FSI"], "a": 0},
+{"id": 257, "q": "Nom du système d'affichage tête haute Audi ?", "o": ["Head-up Display", "HUD", "Vision", "Cockpit"], "a": 0},
+{"id": 258, "q": "Code châssis Audi Q3 I ?", "o": ["8U", "F3", "8R", "4L"], "a": 0},
+{"id": 259, "q": "Quelle Audi a été championne du monde 1984 ?", "o": ["Quattro A2", "Sport Quattro", "S1", "200"], "a": 0},
+{"id": 260, "q": "Puissance Audi R8 V10 Performance ?", "o": ["620 ch", "610 ch", "600 ch", "570 ch"], "a": 0},
+{"id": 261, "q": "Nom du système Quattro avec différentiel arrière sport ?", "o": ["Sport Diff", "Quattro", "Torsen", "Haldex"], "a": 0},
+{"id": 262, "q": "Quelle Audi a un moteur 2.5 TFSI ?", "o": ["RS3", "TTRS", "RSQ3", "Tous les cités"], "a": 3},
+{"id": 263, "q": "Quelle Audi a une carrosserie Space Frame ?", "o": ["A8", "TT", "R8", "Tous les cités"], "a": 3},
+{"id": 264, "q": "Code moteur 1.2 TSI ?", "o": ["CBZB", "CJZA", "BAM", "ADU"], "a": 0},
+{"id": 265, "q": "Quelle Audi est un break de chasse ?", "o": ["RS6", "RS4", "A6 Avant", "Tous les cités"], "a": 3},
+{"id": 266, "q": "Nom du système d'aide à la conduite Audi ?", "o": ["Pre Sense", "Pilot", "Safety", "Assist"], "a": 0},
+{"id": 267, "q": "Date lancement Audi A7 ?", "o": ["2010", "2011", "2012", "2013"], "a": 0},
+{"id": 268, "q": "Moteur Audi A7 3.0 TDI ?", "o": ["V6 TDI", "V6 TFSI", "V8 TDI", "V10"], "a": 0},
+{"id": 269, "q": "Code châssis A1 (8X) ?", "o": ["8X", "8V", "8Y", "8P"], "a": 0},
+{"id": 270, "q": "Type de boîte A1 ?", "o": ["S-tronic", "Manuelle", "Multitronic", "Tous les cités"], "a": 3},
+{"id": 271, "q": "Quelle Audi a un aileron dynamique ?", "o": ["A7", "TT", "A5", "Tous les cités"], "a": 3},
+{"id": 272, "q": "Nom finition S-line ?", "o": ["Sport", "Style", "Design", "Black"], "a": 0},
+{"id": 273, "q": "Moteur Audi RS5 B8 ?", "o": ["4.2 V8", "2.9 V6", "3.0 TFSI", "V10"], "a": 0},
+{"id": 274, "q": "Code moteur 3.0 TFSI ?", "o": ["CAKA", "CREC", "CTUB", "Tous les cités"], "a": 3},
+{"id": 275, "q": "Quelle Audi a 4 roues motrices ?", "o": ["Quattro", "S-model", "RS-model", "Tous les cités"], "a": 3},
+{"id": 276, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 277, "q": "Date lancement Audi RS6 ?", "o": ["2002", "2003", "2004", "2005"], "a": 0},
+{"id": 278, "q": "Moteur Audi RS6 C5 ?", "o": ["4.2 V8 Bi", "4.0 V8", "V10", "W12"], "a": 0},
+{"id": 279, "q": "Quelle Audi a une suspension magnétique ?", "o": ["TT", "R8", "S3", "Tous les cités"], "a": 3},
+{"id": 280, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 281, "q": "Quelle Audi est un SUV ?", "o": ["Q2", "Q5", "Q7", "Tous les cités"], "a": 3},
+{"id": 282, "q": "Code châssis A8 D3 ?", "o": ["4E", "D2", "D4", "D5"], "a": 0},
+{"id": 283, "q": "Quelle Audi est une électrique ?", "o": ["e-tron", "Q4", "e-tron GT", "Tous les cités"], "a": 3},
+{"id": 284, "q": "Nom du pack extérieur ?", "o": ["Black", "Optique", "Style", "Design"], "a": 0},
+{"id": 285, "q": "Moteur Audi RS Q8 ?", "o": ["4.0 V8", "V10", "W12", "V6"], "a": 0},
+{"id": 286, "q": "Code moteur 2.0 TDI 190ch ?", "o": ["DFHA", "CGLC", "BAM", "ADU"], "a": 0},
+{"id": 287, "q": "Quelle Audi a un moteur arrière ?", "o": ["R8", "Concept", "Avus", "Tous les cités"], "a": 3},
+{"id": 288, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 289, "q": "Date lancement Audi RS4 ?", "o": ["2000", "2001", "2002", "2003"], "a": 0},
+{"id": 290, "q": "Qui a fondé Wanderer ?", "o": ["Winkler", "Horch", "Audi", "VW"], "a": 0},
+{"id": 291, "q": "Quel modèle Audi a le moteur V8 biturbo de 560ch ?", "o": ["RS6 C7", "RS7 C7", "S8 D4", "Tous les cités"], "a": 3},
+{"id": 292, "q": "Quelle Audi a un moteur central ?", "o": ["R8", "TT", "A5", "A3"], "a": 0},
+{"id": 293, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 294, "q": "Date lancement Audi A3 ?", "o": ["1996", "1997", "1998", "1999"], "a": 0},
+{"id": 295, "q": "Moteur Audi A3 1.8 Turbo ?", "o": ["AGU", "BAM", "APX", "Tous les cités"], "a": 3},
+{"id": 296, "q": "Quelle Audi est un hybride ?", "o": ["A3", "Q5", "A8", "Tous les cités"], "a": 3},
+{"id": 297, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 298, "q": "Quelle Audi a 7 places ?", "o": ["Q7", "Q5", "A4", "A3"], "a": 0},
+{"id": 299, "q": "Code châssis A8 D5 ?", "o": ["4N", "4H", "4E", "D4"], "a": 0},
+{"id": 300, "q": "Quelle Audi est un crossover ?", "o": ["Q2", "Q3", "Q5", "Tous les cités"], "a": 3},
+{"id": 301, "q": "Quelle Audi a été championne DTM en 2013 ?", "o": ["RS5 DTM", "A4 DTM", "TT DTM", "R8 DTM"], "a": 0},
+{"id": 302, "q": "Code moteur 2.0 TFSI 225ch ?", "o": ["CNCD", "CDNC", "BAM", "ADU"], "a": 0},
+{"id": 303, "q": "Quelle Audi a un moteur central arrière ?", "o": ["R8", "Concept", "Avus", "Tous les cités"], "a": 3},
+{"id": 304, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 305, "q": "Date lancement Audi TT ?", "o": ["1998", "1999", "2000", "2001"], "a": 0},
+{"id": 306, "q": "Moteur Audi TT 2.0 TFSI ?", "o": ["BWA", "CDL", "EA888", "Tous les cités"], "a": 3},
+{"id": 307, "q": "Quelle Audi a un moteur hybride ?", "o": ["A3", "Q5", "A8", "Tous les cités"], "a": 3},
+{"id": 308, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 309, "q": "Quelle Audi a 7 places ?", "o": ["Q7", "Q5", "A4", "A3"], "a": 0},
+{"id": 310, "q": "Code châssis A8 D5 ?", "o": ["4N", "4H", "4E", "D4"], "a": 0},
+{"id": 311, "q": "Quelle Audi est un crossover ?", "o": ["Q2", "Q3", "Q5", "Tous les cités"], "a": 3},
+{"id": 312, "q": "Nom du pack extérieur ?", "o": ["Black", "Optique", "Style", "Design"], "a": 0},
+{"id": 313, "q": "Moteur Audi RS Q8 ?", "o": ["4.0 V8", "V10", "W12", "V6"], "a": 0},
+{"id": 314, "q": "Code moteur 2.0 TDI 190ch ?", "o": ["DFHA", "CGLC", "BAM", "ADU"], "a": 0},
+{"id": 315, "q": "Quelle Audi a un moteur arrière ?", "o": ["R8", "Concept", "Avus", "Tous les cités"], "a": 3},
+{"id": 316, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 317, "q": "Date lancement Audi RS4 ?", "o": ["2000", "2001", "2002", "2003"], "a": 0},
+{"id": 318, "q": "Qui a fondé Wanderer ?", "o": ["Winkler", "Horch", "Audi", "VW"], "a": 0},
+{"id": 319, "q": "Quel modèle Audi a le moteur V8 biturbo de 560ch ?", "o": ["RS6 C7", "RS7 C7", "S8 D4", "Tous les cités"], "a": 3},
+{"id": 320, "q": "Quelle Audi a un moteur central ?", "o": ["R8", "TT", "A5", "A3"], "a": 0},
+{"id": 321, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 322, "q": "Date lancement Audi A3 ?", "o": ["1996", "1997", "1998", "1999"], "a": 0},
+{"id": 323, "q": "Moteur Audi A3 1.8 Turbo ?", "o": ["AGU", "BAM", "APX", "Tous les cités"], "a": 3},
+{"id": 324, "q": "Quelle Audi est un hybride ?", "o": ["A3", "Q5", "A8", "Tous les cités"], "a": 3},
+{"id": 325, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 326, "q": "Quelle Audi a 7 places ?", "o": ["Q7", "Q5", "A4", "A3"], "a": 0},
+{"id": 327, "q": "Code châssis A8 D5 ?", "o": ["4N", "4H", "4E", "D4"], "a": 0},
+{"id": 328, "q": "Quelle Audi est un crossover ?", "o": ["Q2", "Q3", "Q5", "Tous les cités"], "a": 3},
+{"id": 329, "q": "Nom du pack extérieur ?", "o": ["Black", "Optique", "Style", "Design"], "a": 0},
+{"id": 330, "q": "Moteur Audi RS Q8 ?", "o": ["4.0 V8", "V10", "W12", "V6"], "a": 0},
+{"id": 331, "q": "Code moteur 2.0 TDI 190ch ?", "o": ["DFHA", "CGLC", "BAM", "ADU"], "a": 0},
+{"id": 332, "q": "Quelle Audi a un moteur arrière ?", "o": ["R8", "Concept", "Avus", "Tous les cités"], "a": 3},
+{"id": 333, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 334, "q": "Date lancement Audi RS4 ?", "o": ["2000", "2001", "2002", "2003"], "a": 0},
+{"id": 335, "q": "Qui a fondé Wanderer ?", "o": ["Winkler", "Horch", "Audi", "VW"], "a": 0},
+{"id": 336, "q": "Quel modèle Audi a le moteur V8 biturbo de 560ch ?", "o": ["RS6 C7", "RS7 C7", "S8 D4", "Tous les cités"], "a": 3},
+{"id": 337, "q": "Quelle Audi a un moteur central ?", "o": ["R8", "TT", "A5", "A3"], "a": 0},
+{"id": 338, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 339, "q": "Date lancement Audi A3 ?", "o": ["1996", "1997", "1998", "1999"], "a": 0},
+{"id": 340, "q": "Moteur Audi A3 1.8 Turbo ?", "o": ["AGU", "BAM", "APX", "Tous les cités"], "a": 3},
+{"id": 341, "q": "Quelle Audi est un hybride ?", "o": ["A3", "Q5", "A8", "Tous les cités"], "a": 3},
+{"id": 342, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 343, "q": "Quelle Audi a 7 places ?", "o": ["Q7", "Q5", "A4", "A3"], "a": 0},
+{"id": 344, "q": "Code châssis A8 D5 ?", "o": ["4N", "4H", "4E", "D4"], "a": 0},
+{"id": 345, "q": "Quelle Audi est un crossover ?", "o": ["Q2", "Q3", "Q5", "Tous les cités"], "a": 3},
+{"id": 346, "q": "Nom du pack extérieur ?", "o": ["Black", "Optique", "Style", "Design"], "a": 0},
+{"id": 347, "q": "Moteur Audi RS Q8 ?", "o": ["4.0 V8", "V10", "W12", "V6"], "a": 0},
+{"id": 348, "q": "Code moteur 2.0 TDI 190ch ?", "o": ["DFHA", "CGLC", "BAM", "ADU"], "a": 0},
+{"id": 349, "q": "Quelle Audi a un moteur arrière ?", "o": ["R8", "Concept", "Avus", "Tous les cités"], "a": 3},
+{"id": 350, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 351, "q": "Quel modèle Audi a inauguré le moteur V10 5.2 FSI ?", "o": ["S6 C6", "R8 V10", "S8 D3", "RS6 C6"], "a": 0},
+{"id": 352, "q": "Quelle est la puissance du moteur 2.0 TFSI de l'Audi S3 8P (Facelift) ?", "o": ["256 ch", "265 ch", "272 ch", "280 ch"], "a": 1},
+{"id": 353, "q": "Quel ingénieur a dirigé le développement du système Quattro ?", "o": ["Jörg Bensinger", "Walter Röhrl", "Ferdinand Piëch", "Ludwig Kraus"], "a": 0},
+{"id": 354, "q": "Quel modèle Audi a été le premier à utiliser un châssis en aluminium ?", "o": ["A8 D2", "A2", "TT", "R8"], "a": 0},
+{"id": 355, "q": "Quelle Audi a un moteur V6 Biturbo 2.7 ?", "o": ["S4 B5", "RS4 B5", "A6 C5", "Tous les cités"], "a": 3},
+{"id": 356, "q": "Quelle était la fonction du moteur AAN ?", "o": ["5 cylindres Turbo", "4 cylindres Atmo", "V6 Diesel", "V8 FSI"], "a": 0},
+{"id": 357, "q": "Nom du système d'affichage tête haute Audi ?", "o": ["Head-up Display", "HUD", "Vision", "Cockpit"], "a": 0},
+{"id": 358, "q": "Code châssis Audi Q3 I ?", "o": ["8U", "F3", "8R", "4L"], "a": 0},
+{"id": 359, "q": "Quelle Audi a été championne du monde 1984 ?", "o": ["Quattro A2", "Sport Quattro", "S1", "200"], "a": 0},
+{"id": 360, "q": "Puissance Audi R8 V10 Performance ?", "o": ["620 ch", "610 ch", "600 ch", "570 ch"], "a": 0},
+{"id": 361, "q": "Quel est le nom de la division sportive actuelle d'Audi ?", "o": ["Audi Sport GmbH", "Quattro GmbH", "Audi Performance", "Audi Racing"], "a": 0},
+{"id": 362, "q": "Quelle Audi a des feux arrière OLED ?", "o": ["TT RS", "A8 D5", "R8 V10", "A7 C8"], "a": 0},
+{"id": 363, "q": "Quelle marque Auto Union était spécialisée dans les motos ?", "o": ["DKW", "Wanderer", "Horch", "Audi"], "a": 0},
+{"id": 364, "q": "Quel est le code moteur du 3.0 TDI 240 ch ?", "o": ["CAPA", "CCWA", "CDUC", "CRTD"], "a": 1},
+{"id": 365, "q": "Quelle Audi a un V8 atmosphérique 4.2L ?", "o": ["RS4 B7", "S5 B8", "A6 C6", "RS6 C5"], "a": 0},
+{"id": 366, "q": "Nom du concept tout-terrain Audi 2019 ?", "o": ["AI:TRAIL", "AI:ME", "AI:RACE", "AI:ICON"], "a": 0},
+{"id": 367, "q": "Quelle Audi a une carrosserie en aluminium Space Frame ?", "o": ["A8 D2", "A6 C5", "A4 B6", "TT"], "a": 0},
+{"id": 368, "q": "Quelle est la particularité du moteur 2.0 TFSI 200 ch ?", "o": ["Injection directe", "Carburateur", "Diesel", "Atmo"], "a": 0},
+{"id": 369, "q": "Nom de la première berline Audi à moteur 5 cylindres ?", "o": ["Audi 100 5E", "Audi 80", "Audi 200", "Audi Quattro"], "a": 0},
+{"id": 370, "q": "Quel modèle Audi a été restylé avec des phares Matrix ?", "o": ["A8 D4", "A6 C7", "Q7", "A4 B8"], "a": 0},
+{"id": 371, "q": "Quelle Audi a un moteur central arrière ?", "o": ["R8", "TT", "A5", "S4"], "a": 0},
+{"id": 372, "q": "Code châssis A8 D4 ?", "o": ["4H", "4E", "D2", "D5"], "a": 0},
+{"id": 373, "q": "Type de carrosserie de l'Audi A5 Sportback ?", "o": ["Coupé", "Berline", "Sportback", "Cabriolet"], "a": 2},
+{"id": 374, "q": "Quelle Audi utilise le moteur W12 6.3L ?", "o": ["A8 D4", "A8 D3", "Q7", "R8"], "a": 0},
+{"id": 375, "q": "Quel modèle Audi a inauguré le 2.5 TFSI 5 cylindres ?", "o": ["TT RS 8J", "RS3 8P", "Q3 RS", "RS3 8V"], "a": 0},
+{"id": 376, "q": "Nom du système Quattro avec différentiel sport ?", "o": ["Quattro avec diff sport", "Quattro", "Torsen", "Haldex"], "a": 0},
+{"id": 377, "q": "Quelle Audi a des portières sans cadre ?", "o": ["A5", "A3", "Q5", "A4"], "a": 0},
+{"id": 378, "q": "Puissance S1 (2014) ?", "o": ["200 ch", "231 ch", "250 ch", "280 ch"], "a": 1},
+{"id": 379, "q": "Quelle Audi a une suspension pneumatique ?", "o": ["A8", "A3", "TT", "R8"], "a": 0},
+{"id": 380, "q": "Année du lancement Audi Q3 ?", "o": ["2010", "2011", "2012", "2013"], "a": 1},
+{"id": 381, "q": "Nom moteur dans l'A1 Quattro ?", "o": ["CDLH", "BAM", "ADU", "CEPA"], "a": 0},
+{"id": 382, "q": "Code châssis A6 C8 ?", "o": ["4A", "4F", "4G", "F2"], "a": 3},
+{"id": 383, "q": "Quelle Audi est une électrique dédiée ?", "o": ["e-tron GT", "A3 e-tron", "Q7 e-tron", "A6 e-tron"], "a": 0},
+{"id": 384, "q": "Type de transmission RS6 ?", "o": ["Quattro", "Haldex", "Torsen", "Propulsion"], "a": 0},
+{"id": 385, "q": "Quelle Audi a été championne DTM en 2004 ?", "o": ["A4 DTM", "TT DTM", "R8 DTM", "RS4 DTM"], "a": 0},
+{"id": 386, "q": "Nom du pack extérieur Audi ?", "o": ["S-line", "Black Edition", "RS", "Competition"], "a": 0},
+{"id": 387, "q": "Code châssis Q5 I ?", "o": ["8R", "FY", "8K", "4L"], "a": 0},
+{"id": 388, "q": "Moteur dans l'Audi TT 3.2 ?", "o": ["VR6", "L4", "V6 Atmo", "V8"], "a": 0},
+{"id": 389, "q": "Type de boîte R8 V8 ?", "o": ["R-tronic", "S-tronic", "Manuelle", "Multitronic"], "a": 0},
+{"id": 390, "q": "Quelle Audi a un aileron fixe ?", "o": ["TTRS", "A3", "A4", "Q5"], "a": 0},
+{"id": 391, "q": "Nom finition cuir Audi ?", "o": ["Nappa", "Valcona", "Alcantara", "Tissu"], "a": 0},
+{"id": 392, "q": "Quel moteur pour l'Audi R8 GT ?", "o": ["V10", "V8", "W12", "V10 Plus"], "a": 0},
+{"id": 393, "q": "Code châssis A7 C7 ?", "o": ["4G8", "4F", "4H", "F2"], "a": 0},
+{"id": 394, "q": "Quelle Audi est un SUV coupé ?", "o": ["Q8", "Q7", "Q5", "Q3"], "a": 0},
+{"id": 395, "q": "Date lancement Audi R8 ?", "o": ["2006", "2007", "2008", "2009"], "a": 1},
+{"id": 396, "q": "Nom système info-divertissement Audi ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 397, "q": "Quelle Audi a un moteur 1.4 TFSI ?", "o": ["A1", "A8", "R8", "RS6"], "a": 0},
+{"id": 398, "q": "Code châssis A4 B6 ?", "o": ["8E", "8K", "B5", "B7"], "a": 0},
+{"id": 399, "q": "Qui a fondé Horch ?", "o": ["August Horch", "Ferdinand Porsche", "Karl Benz", "VW"], "a": 0},
+{"id": 400, "q": "Quelle Audi a été surnommée 'la berline la plus aérodynamique' en 1982 ?", "o": ["Audi 80", "Audi 100", "Audi 200", "Audi 5000"], "a": 1},
+{"id": 401, "q": "Code châssis de l'Audi A6 C5 ?", "o": ["4B", "4F", "4G", "F2"], "a": 0},
+{"id": 402, "q": "Quel moteur équipe l'Audi S3 8L ?", "o": ["1.8T", "2.0T", "V6", "V8"], "a": 0},
+{"id": 403, "q": "Nom de la première A8 ?", "o": ["D2", "D3", "D4", "D5"], "a": 0},
+{"id": 404, "q": "Quelle Audi a un V10 atmosphérique ?", "o": ["R8", "S8", "RS6", "Q7"], "a": 0},
+{"id": 405, "q": "Code A4 B8 ?", "o": ["8K", "8W", "8E", "B6"], "a": 0},
+{"id": 406, "q": "Quelle Audi est un cabriolet ?", "o": ["A3", "A5", "TT", "Tous"], "a": 3},
+{"id": 407, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 408, "q": "Quelle Audi a 7 places ?", "o": ["Q7", "Q5", "A4", "A3"], "a": 0},
+{"id": 409, "q": "Date lancement Q7 ?", "o": ["2005", "2006", "2007", "2008"], "a": 1},
+{"id": 410, "q": "Quelle Audi est un crossover ?", "o": ["Q2", "Q3", "Q5", "Tous"], "a": 3},
+{"id": 411, "q": "Nom du pack extérieur ?", "o": ["Black", "Optique", "Style", "Design"], "a": 0},
+{"id": 412, "q": "Moteur Audi RS Q8 ?", "o": ["4.0 V8", "V10", "W12", "V6"], "a": 0},
+{"id": 413, "q": "Code moteur 2.0 TDI ?", "o": ["CRLB", "CUNA", "BAM", "ADU"], "a": 0},
+{"id": 414, "q": "Quelle Audi a un moteur arrière ?", "o": ["R8", "Concept", "Avus", "Tous"], "a": 3},
+{"id": 415, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 416, "q": "Date lancement RS4 ?", "o": ["2000", "2001", "2002", "2003"], "a": 0},
+{"id": 417, "q": "Qui a fondé Wanderer ?", "o": ["Winkler", "Horch", "Audi", "VW"], "a": 0},
+{"id": 418, "q": "Quelle Audi a un moteur central ?", "o": ["R8", "TT", "A5", "A3"], "a": 0},
+{"id": 419, "q": "Date lancement A3 ?", "o": ["1996", "1997", "1998", "1999"], "a": 0},
+{"id": 420, "q": "Moteur Audi A3 1.8 T ?", "o": ["AGU", "BAM", "APX", "Tous"], "a": 3},
+{"id": 421, "q": "Quelle Audi est hybride ?", "o": ["A3", "Q5", "A8", "Tous"], "a": 3},
+{"id": 422, "q": "Code A8 D5 ?", "o": ["4N", "4H", "4E", "D4"], "a": 0},
+{"id": 423, "q": "Nom système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 424, "q": "Quelle Audi a 7 places ?", "o": ["Q7", "Q5", "A4", "A3"], "a": 0},
+{"id": 425, "q": "Code moteur 2.0 TDI 190 ?", "o": ["DFHA", "CGLC", "BAM", "ADU"], "a": 0},
+{"id": 426, "q": "Quelle Audi est un crossover ?", "o": ["Q2", "Q3", "Q5", "Tous"], "a": 3},
+{"id": 427, "q": "Quelle Audi a un aileron dynamique ?", "o": ["A7", "TT", "A5", "Tous"], "a": 3},
+{"id": 428, "q": "Code moteur 1.9 TDI ?", "o": ["ALH", "BAM", "ADU", "AAN"], "a": 0},
+{"id": 429, "q": "Quelle Audi est un break de chasse ?", "o": ["RS6", "RS4", "A6 Avant", "Tous"], "a": 3},
+{"id": 430, "q": "Date lancement A7 ?", "o": ["2010", "2011", "2012", "2013"], "a": 0},
+{"id": 431, "q": "Quelle Audi a une suspension magnétique ?", "o": ["TT", "R8", "S3", "Tous"], "a": 3},
+{"id": 432, "q": "Moteur Audi RS6 C5 ?", "o": ["4.2 V8 Bi", "4.0 V8", "V10", "W12"], "a": 0},
+{"id": 433, "q": "Code A6 C8 ?", "o": ["4A", "4F", "4G", "F2"], "a": 3},
+{"id": 434, "q": "Moteur Audi A7 3.0 TDI ?", "o": ["V6 TDI", "V6 TFSI", "V8 TDI", "V10"], "a": 0},
+{"id": 435, "q": "Type de boîte A1 ?", "o": ["S-tronic", "Manuelle", "Multitronic", "Tous"], "a": 3},
+{"id": 436, "q": "Quelle Audi a un moteur central ?", "o": ["R8", "Concept", "Avus", "Tous"], "a": 3},
+{"id": 437, "q": "Code châssis A4 B6 ?", "o": ["8E", "8K", "B5", "B7"], "a": 0},
+{"id": 438, "q": "Date lancement Audi A1 ?", "o": ["2010", "2011", "2012", "2013"], "a": 0},
+{"id": 439, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 440, "q": "Quelle Audi a un toit panoramique ?", "o": ["A3", "A8", "Q7", "Tous"], "a": 3},
+{"id": 441, "q": "Quelle Audi est électrique ?", "o": ["e-tron", "Q4", "e-tron GT", "Tous"], "a": 3},
+{"id": 442, "q": "Nom finition Audi ?", "o": ["Design", "Sport", "Business", "Tous"], "a": 3},
+{"id": 443, "q": "Code châssis S1 ?", "o": ["8X", "8V", "8Y", "8P"], "a": 0},
+{"id": 444, "q": "Quelle Audi a 4 roues motrices ?", "o": ["Quattro", "S", "RS", "Tous"], "a": 3},
+{"id": 445, "q": "Quelle Audi a un moteur 4 cylindres ?", "o": ["A4", "A3", "A1", "Tous"], "a": 3},
+{"id": 446, "q": "Code moteur 1.4 TFSI ?", "o": ["CAXA", "CZCA", "CHPB", "CMBA"], "a": 0},
+{"id": 447, "q": "Quelle Audi est un cabriolet ?", "o": ["A3", "A5", "TT", "Tous"], "a": 3},
+{"id": 448, "q": "Date lancement Q5 ?", "o": ["2008", "2009", "2010", "2011"], "a": 0},
+{"id": 449, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 450, "q": "Moteur Audi A1 1.4 ?", "o": ["CAXA", "BAM", "ADU", "AAN"], "a": 0},
+{"id": 451, "q": "Quelle Audi a des portières sans cadre ?", "o": ["A5", "A3", "Q5", "A4"], "a": 0},
+{"id": 452, "q": "Code moteur 2.0 TFSI 252 ?", "o": ["CYRB", "DLBA", "EA888", "CJSB"], "a": 0},
+{"id": 453, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 454, "q": "Quelle Audi est construite sur la plateforme MEB ?", "o": ["Q4 e-tron", "e-tron GT", "Q8 e-tron", "R8"], "a": 0},
+{"id": 455, "q": "Code châssis A4 B8 ?", "o": ["8K", "8W", "8E", "B6"], "a": 0},
+{"id": 456, "q": "Quelle Audi est un crossover ?", "o": ["Q2", "Q3", "Q5", "Tous"], "a": 3},
+{"id": 457, "q": "Quelle Audi a 7 places ?", "o": ["Q7", "Q5", "A4", "A3"], "a": 0},
+{"id": 458, "q": "Code châssis A8 D5 ?", "o": ["4N", "4H", "4E", "D4"], "a": 0},
+{"id": 459, "q": "Quelle Audi est un break ?", "o": ["RS6", "RS4", "A4 Avant", "Tous"], "a": 3},
+{"id": 460, "q": "Date lancement A7 ?", "o": ["2010", "2011", "2012", "2013"], "a": 0},
+{"id": 461, "q": "Quelle Audi a une suspension magnétique ?", "o": ["TT", "R8", "S3", "Tous"], "a": 3},
+{"id": 462, "q": "Moteur Audi RS6 C5 ?", "o": ["4.2 V8 Bi", "4.0 V8", "V10", "W12"], "a": 0},
+{"id": 463, "q": "Code A6 C8 ?", "o": ["4A", "4F", "4G", "F2"], "a": 3},
+{"id": 464, "q": "Moteur Audi A7 3.0 TDI ?", "o": ["V6 TDI", "V6 TFSI", "V8 TDI", "V10"], "a": 0},
+{"id": 465, "q": "Type de boîte A1 ?", "o": ["S-tronic", "Manuelle", "Multitronic", "Tous"], "a": 3},
+{"id": 466, "q": "Quelle Audi a un moteur central ?", "o": ["R8", "Concept", "Avus", "Tous"], "a": 3},
+{"id": 467, "q": "Code châssis A4 B6 ?", "o": ["8E", "8K", "B5", "B7"], "a": 0},
+{"id": 468, "q": "Date lancement Audi A1 ?", "o": ["2010", "2011", "2012", "2013"], "a": 0},
+{"id": 469, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 470, "q": "Quelle Audi a un toit panoramique ?", "o": ["A3", "A8", "Q7", "Tous"], "a": 3},
+{"id": 471, "q": "Quelle Audi est électrique ?", "o": ["e-tron", "Q4", "e-tron GT", "Tous"], "a": 3},
+{"id": 472, "q": "Nom finition Audi ?", "o": ["Design", "Sport", "Business", "Tous"], "a": 3},
+{"id": 473, "q": "Code châssis S1 ?", "o": ["8X", "8V", "8Y", "8P"], "a": 0},
+{"id": 474, "q": "Quelle Audi a 4 roues motrices ?", "o": ["Quattro", "S", "RS", "Tous"], "a": 3},
+{"id": 475, "q": "Quelle Audi a un moteur 4 cylindres ?", "o": ["A4", "A3", "A1", "Tous"], "a": 3},
+{"id": 476, "q": "Code moteur 1.4 TFSI ?", "o": ["CAXA", "CZCA", "CHPB", "CMBA"], "a": 0},
+{"id": 477, "q": "Quelle Audi est un cabriolet ?", "o": ["A3", "A5", "TT", "Tous"], "a": 3},
+{"id": 478, "q": "Date lancement Q5 ?", "o": ["2008", "2009", "2010", "2011"], "a": 0},
+{"id": 479, "q": "Nom du système MMI ?", "o": ["MMI", "iDrive", "Sync", "Connect"], "a": 0},
+{"id": 480, "q": "Moteur Audi A1 1.4 ?", "o": ["CAXA", "BAM", "ADU", "AAN"], "a": 0},
+{"id": 481, "q": "Quelle Audi a des portières sans cadre ?", "o": ["A5", "A3", "Q5", "A4"], "a": 0},
+{"id": 482, "q": "Code moteur 2.0 TFSI 252 ?", "o": ["CYRB", "DLBA", "EA888", "CJSB"], "a": 0},
+{"id": 483, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 484, "q": "Quelle Audi est construite sur la plateforme MEB ?", "o": ["Q4 e-tron", "e-tron GT", "Q8 e-tron", "R8"], "a": 0},
+{"id": 485, "q": "Code châssis A4 B8 ?", "o": ["8K", "8W", "8E", "B6"], "a": 0},
+{"id": 486, "q": "Quelle Audi est un crossover ?", "o": ["Q2", "Q3", "Q5", "Tous"], "a": 3},
+{"id": 487, "q": "Quelle Audi a 7 places ?", "o": ["Q7", "Q5", "A4", "A3"], "a": 0},
+{"id": 488, "q": "Code châssis A8 D5 ?", "o": ["4N", "4H", "4E", "D4"], "a": 0},
+{"id": 489, "q": "Quelle Audi est un break ?", "o": ["RS6", "RS4", "A4 Avant", "Tous"], "a": 3},
+{"id": 490, "q": "Date lancement A7 ?", "o": ["2010", "2011", "2012", "2013"], "a": 0},
+{"id": 491, "q": "Quelle Audi a une suspension magnétique ?", "o": ["TT", "R8", "S3", "Tous"], "a": 3},
+{"id": 492, "q": "Moteur Audi RS6 C5 ?", "o": ["4.2 V8 Bi", "4.0 V8", "V10", "W12"], "a": 0},
+{"id": 493, "q": "Code A6 C8 ?", "o": ["4A", "4F", "4G", "F2"], "a": 3},
+{"id": 494, "q": "Moteur Audi A7 3.0 TDI ?", "o": ["V6 TDI", "V6 TFSI", "V8 TDI", "V10"], "a": 0},
+{"id": 495, "q": "Type de boîte A1 ?", "o": ["S-tronic", "Manuelle", "Multitronic", "Tous"], "a": 3},
+{"id": 496, "q": "Quelle Audi a un moteur central ?", "o": ["R8", "Concept", "Avus", "Tous"], "a": 3},
+{"id": 497, "q": "Code châssis A4 B6 ?", "o": ["8E", "8K", "B5", "B7"], "a": 0},
+{"id": 498, "q": "Date lancement Audi A1 ?", "o": ["2010", "2011", "2012", "2013"], "a": 0},
+{"id": 499, "q": "Nom du système Quattro ?", "o": ["Quattro", "Torsen", "Haldex", "4RM"], "a": 0},
+{"id": 500, "q": "Quelle Audi a un toit panoramique ?", "o": ["A3", "A8", "Q7", "Tous"], "a": 3}
+];
+
+let selectedQuestions = [];
+let currentIdx = 0;
+let score = 0;
+let timeLeft = 30;
+let timerId = null;
+
+// FONCTION MANQUANTE : Mélangeur aléatoire
+function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+}
+
+function initQuiz() {
+    const pool = shuffle([...questionsData]);
+    selectedQuestions = pool.slice(0, Math.min(pool.length, 30));
+    loadQuestion();
+}
+
+function startTimer() {
+    clearInterval(timerId);
+    timeLeft = 30;
+    document.getElementById('timer').innerText = timeLeft;
+    timerId = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').innerText = timeLeft;
+        if(timeLeft <= 0) {
+            clearInterval(timerId);
+            checkAnswer(null);
+        }
+    }, 1000);
+}
+
+function loadQuestion() {
+    const q = selectedQuestions[currentIdx];
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('q-number').innerText = `QUESTION ${currentIdx + 1}/${selectedQuestions.length}`;
+    document.getElementById('progress').style.width = `${((currentIdx) / selectedQuestions.length) * 100}%`;
+    document.getElementById('q-text').innerText = q.q;
+
+    const optCont = document.getElementById('options');
+    optCont.innerHTML = '';
+    // Mélange des options pour chaque question
+    shuffle([...q.o]).forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(opt);
+        optCont.appendChild(btn);
+    });
+    
+    startTimer();
+}
+
+function checkAnswer(selected) {
+    clearInterval(timerId);
+    const q = selectedQuestions[currentIdx];
+    const btns = document.querySelectorAll('.opt-btn');
+    btns.forEach(b => {
+        b.disabled = true;
+        if(b.innerText === q.a) b.classList.add('correct');
+        else if(selected !== null && b.innerText === selected) b.classList.add('wrong');
+    });
+    
+    if(selected === q.a) score++;
+    document.getElementById('result-title').innerText = (selected === q.a) ? "SUCCÈS" : "ERREUR";
+    document.getElementById('rationale').innerText = q.r;
+    document.getElementById('feedback').style.display = 'block';
+}
+
+function nextQuestion() {
+    currentIdx++;
+    if(currentIdx < selectedQuestions.length) loadQuestion();
+    else {
+        document.getElementById('quiz-ui').style.display = 'none';
+        document.getElementById('feedback').style.display = 'none';
+        document.getElementById('final-screen').style.display = 'block';
+        document.getElementById('final-score').innerHTML = `Score Final : <strong>${score}/${selectedQuestions.length}</strong>`;
+    }
+}
+
+window.onload = initQuiz;
+</script>
+</body>
+</html>
