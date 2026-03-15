@@ -1458,9 +1458,10 @@ let timeLeft = 30;
 let shuffledQuestions = [];
 
 function initQuiz() {
-    shuffledQuestions = questionsData.sort(() => Math.random() - 0.5);
+    // Mélange tout le lot et coupe à 30
+    shuffledQuestions = questionsData.sort(() => Math.random() - 0.5).slice(0, 30);
     showQuestion();
-}
+}    
 
 function showQuestion() {
     // Si on a fait 30 questions, on termine
