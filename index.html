@@ -1463,27 +1463,26 @@ function initQuiz() {
 }
 
 function showQuestion() {
+    // Si on a fait 30 questions, on termine
     if (currentIdx >= 30) return endGame();
     
+    clearInterval(timer); // Sécurité pour éviter les chevauchements
     document.getElementById('explanation-box').style.display = 'none';
     document.getElementById('next-btn').style.display = 'none';
 
-    const counterElement = document.getElementById('question-counter'); // Vérifie l'ID dans ton HTML
-    if (counterElement) {
-        counterElement.innerText = `${currentIdx + 1} / 30`;
-    }
-    
+    // Mise à jour du compteur (On utilise q-number)
+    document.getElementById('q-number').innerText = `Épreuve ${currentIdx + 1} / 30`;
     
     timeLeft = 30;
     updateDisplay();
 
     const data = shuffledQuestions[currentIdx];
-    document.getElementById('q-number').innerText = `Épreuve ${currentIdx + 1} / ${shuffledQuestions.length}`;
     document.getElementById('question-text').innerText = data.q;
     
     const container = document.getElementById('options-container');
     container.innerHTML = '';
     
+    // Mélange des options
     const shuffledOps = [...data.ops].sort(() => Math.random() - 0.5);
     shuffledOps.forEach(op => {
         const btn = document.createElement('button');
