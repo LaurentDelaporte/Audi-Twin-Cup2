@@ -8,7 +8,6 @@
         :root {
             --audi-red: #bb0a30;
             --audi-black: #000000;
-            --audi-grey: #f0f0f0;
             --success: #28a745;
             --error: #dc3545;
         }
@@ -26,86 +25,52 @@
 
         #quiz-container {
             background: #111111;
-            padding: 50px;
+            padding: 40px;
             width: 95%;
-            max-width: 800px;
+            max-width: 850px;
             border-top: 4px solid var(--audi-red);
             box-shadow: 0 30px 60px rgba(0,0,0,0.9);
             text-align: center;
         }
 
         #digital-timer {
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Courier New', monospace;
             font-size: 3rem;
             color: var(--audi-red);
             font-weight: bold;
             letter-spacing: 5px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        h2 { font-weight: 300; color: #666; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; }
+        h2 { font-weight: 300; color: #666; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; }
 
-        .question { 
-            font-size: 1.6rem; 
-            margin: 30px 0; 
-            font-weight: 300;
-            line-height: 1.4;
-        }
+        .question { font-size: 1.5rem; margin: 25px 0; font-weight: 300; line-height: 1.4; font-style: italic; }
 
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
 
         button {
-            background: transparent;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 20px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            background: transparent; border: 1px solid #333; color: #fff;
+            padding: 18px; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;
         }
 
-        button:hover:not(:disabled) { border-color: #fff; }
-
+        button:hover:not(:disabled) { border-color: #fff; background: #1a1a1a; }
         button.correct { background-color: var(--success) !important; border-color: var(--success); }
         button.wrong { background-color: var(--error) !important; border-color: var(--error); }
 
         #explanation-box {
-            display: none;
-            background: #1a1a1a;
-            border-left: 3px solid var(--audi-red);
-            padding: 25px;
-            text-align: left;
-            margin-top: 20px;
-            font-size: 1.1rem;
-            line-height: 1.5;
+            display: none; background: #1a1a1a; border-left: 3px solid var(--audi-red);
+            padding: 20px; text-align: left; margin-top: 15px; font-size: 1rem;
         }
 
-        #explanation-box b { color: var(--audi-red); text-transform: uppercase; font-size: 0.8rem; }
+        #explanation-box b { color: var(--audi-red); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
 
         #next-btn {
-            display: none;
-            width: 100%;
-            background: var(--audi-red);
-            color: white;
-            border: none;
-            padding: 18px;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            margin-top: 25px;
+            display: none; width: 100%; background: var(--audi-red); color: white;
+            border: none; padding: 18px; font-size: 1rem; text-transform: uppercase;
+            letter-spacing: 2px; cursor: pointer; margin-top: 20px;
         }
 
-        #next-btn:hover { background: #9a0828; }
-
         #score-board { display: none; }
-        .hidden { display: none; }
-
         @media (max-width: 600px) { .options { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -115,7 +80,7 @@
     <div id="game-zone">
         <div id="digital-timer">00:30</div>
         <h2 id="q-number">Question 1 / 30</h2>
-        <div class="question" id="question-text">Initialisation...</div>
+        <div class="question" id="question-text">Initialisation du système...</div>
         <div class="options" id="options-container"></div>
         <div id="explanation-box"></div>
         <button id="next-btn" onclick="nextQuestion()">Passer à l'épreuve suivante</button>
@@ -124,31 +89,192 @@
     <div id="score-board">
         <h1 style="font-weight: 300;">Analyse Terminée</h1>
         <p id="final-score" style="font-size: 2rem; margin: 30px 0;"></p>
-        <button onclick="location.reload()" style="border: 1px solid var(--audi-red); width: auto; padding: 15px 40px;">Recommencer</button>
+        <button onclick="location.reload()" style="border: 1px solid var(--audi-red); cursor:pointer; background:transparent; color:white; padding: 15px 40px;">Recommencer</button>
     </div>
 </div>
 
 <script>
 const questionsData = [
     {
-        q: "Lequel de ces pionniers de l'automobile a fondé la manufacture Audi en 1909 ?",
+        q: "Lequel de ces pionniers a fondé la manufacture Audi en 1909 ?",
         ops: ["Gottlieb Daimler", "August Horch", "Ferdinand Porsche", "Wilhelm Maybach"],
         ans: "August Horch",
-        exp: "<b>Le secret de l'expert :</b> Ayant été évincé de sa première entreprise 'Horch', il ne pouvait plus légalement utiliser son nom. Il choisit donc sa traduction latine. <br><br><b>Moyen mnémotechnique :</b> <i>'Horch'</i> signifie <i>'Écoute'</i> en allemand, ce qui devient <i>'Audi'</i> en latin. Pensez à l'auditif."
+        exp: "<b>Note Historique :</b> Ayant perdu les droits sur son propre nom 'Horch', il utilisa sa traduction latine.<br><b>Mémo :</b> <i>Horch</i> signifie <i>Écoute</i> en allemand, ce qui se dit <i>Audi</i> en latin."
     },
     {
-        q: "Quelle est la symbolique historique des quatre anneaux entrelacés formant l'emblème d'Audi ?",
-        ops: ["Les quatre temps du cycle moteur", "Les quatre éléments fondamentaux", "L'alliance de quatre constructeurs au sein d'Auto Union", "Les quatre victoires consécutives au Mans"],
-        ans: "L'alliance de quatre constructeurs au sein d'Auto Union",
-        exp: "<b>Le secret de l'expert :</b> Ce logo célèbre la fusion de 1932 entre Audi, DKW, Horch et Wanderer pour survivre à la Grande Dépression.<br><br><b>Moyen mnémotechnique :</b> Visualisez les 4 marques comme 4 anneaux scellant un pacte de force."
+        q: "Quelle est la signification du terme latin « Audi », choisi par le fondateur ?",
+        ops: ["La vitesse", "L'union", "Écoute", "Toujours devant"],
+        ans: "Écoute",
+        exp: "<b>Précision Linguistique :</b> C'est l'impératif du verbe <i>audire</i>.<br><b>Mémo :</b> Pensez à l'auditif ou à l'audition."
     },
     {
-        q: "Quelle prouesse l'Audi R10 TDI a-t-elle accomplie lors des 24 Heures du Mans en 2006 ?",
-        ops: ["Le record absolu de vitesse en pointe", "La première victoire d'un moteur Diesel", "Une course entière sans aucun ravitaillement", "L'utilisation de bio-carburant de synthèse"],
-        ans: "La première victoire d'un moteur Diesel",
-        exp: "<b>Le secret de l'expert :</b> Audi a prouvé au monde que le Diesel pouvait allier endurance et performance extrême en compétition.<br><br><b>Moyen mnémotechnique :</b> <b>TDI</b> = <b>T</b>riomphe du <b>D</b>iesel <b>I</b>ncontestable."
+        q: "Quelle est la symbolique historique des quatre anneaux ?",
+        ops: ["Les cycles moteur", "Les 4 éléments", "L'alliance Auto Union", "Les victoires au Mans"],
+        ans: "L'alliance Auto Union",
+        exp: "<b>Note Historique :</b> Ils représentent la fusion en 1932 d'Audi, DKW, Horch et Wanderer.<br><b>Mémo :</b> 4 marques alliées = 4 anneaux entrelacés."
+    },
+    {
+        q: "Dans quelle ville de Bavière se situe le siège social historique d'Audi ?",
+        ops: ["Stuttgart", "Munich", "Wolfsburg", "Ingolstadt"],
+        ans: "Ingolstadt",
+        exp: "<b>Note Géographique :</b> Ingolstadt est le cœur battant de la production mondiale d'Audi.<br><b>Mémo :</b> <b>I</b>ngolstadt commence par <b>I</b> comme <b>I</b>dentité Audi."
+    },
+    {
+        q: "Quelle marque ne faisait point partie de l'Union initiale (Auto Union) ?",
+        ops: ["DKW", "Wanderer", "BMW", "Horch"],
+        ans: "BMW",
+        exp: "<b>Note Historique :</b> BMW a toujours été un concurrent indépendant d'Auto Union.<br><b>Mémo :</b> BMW est basé à Munich, pas à Ingolstadt."
+    },
+    {
+        q: "En quelle année Audi fut-elle officiellement relancée par Volkswagen ?",
+        ops: ["1945", "1965", "1972", "1980"],
+        ans: "1965",
+        exp: "<b>Note Historique :</b> C'est l'année de sortie de la première 'Audi' moderne après le rachat d'Auto Union par VW.<br><b>Mémo :</b> Le milieu des années 60 marque la renaissance."
+    },
+    {
+        q: "Quel est le slogan exprimant la philosophie d'innovation d'Audi ?",
+        ops: ["Das Auto", "Vorsprung durch Technik", "Sheer Driving Pleasure", "The Best or Nothing"],
+        ans: "Vorsprung durch Technik",
+        exp: "<b>Le secret :</b> Ce slogan signifie 'L'avance par la technologie'.<br><b>Mémo :</b> C'est l'ADN technique de la marque depuis 1971."
+    },
+    {
+        q: "Comment se nomme la transmission intégrale permanente d'Audi ?",
+        ops: ["4Matic", "xDrive", "Quattro", "Allroad"],
+        ans: "Quattro",
+        exp: "<b>Technique :</b> Lancée avec le coupé éponyme en 1980.<br><b>Mémo :</b> <i>Quattro</i> signifie 4 en italien, pour 4 roues motrices."
+    },
+    {
+        q: "Quelle innovation l'A8 a-t-elle introduite en 1994 ?",
+        ops: ["Châssis carbone", "Audi Space Frame (Alu)", "Peinture auto", "Portes élytre"],
+        ans: "Audi Space Frame (Alu)",
+        exp: "<b>Technique :</b> Une structure révolutionnaire tout en aluminium pour la légèreté.<br><b>Mémo :</b> <b>A</b>8 = <b>A</b>luminium <b>S</b>pace <b>F</b>rame."
+    },
+    {
+        q: "Quelle appellation désigne la gamme 100% électrique ?",
+        ops: ["g-tron", "h-tron", "e-tron", "i-Performance"],
+        ans: "e-tron",
+        exp: "<b>Technique :</b> Désigne la transition vers la mobilité durable.<br><b>Mémo :</b> 'e' pour électrique, 'tron' pour l'aspect électronique."
+    },
+    {
+        q: "Quelle technologie d'éclairage Audi a-t-elle lancée en série ?",
+        ops: ["Xénon", "Matrix LED", "Acétylène", "Lasers"],
+        ans: "Matrix LED",
+        exp: "<b>Le secret :</b> Permet de rouler en pleins phares sans éblouir les autres.<br><b>Mémo :</b> Comme un écran, les LED sont pilotées individuellement."
+    },
+    {
+        q: "Que signifie l'acronyme « TFSI » ?",
+        ops: ["Turbo Fuel Stratified Injection", "Total Fuel Speed", "Turbo Flow System", "Twin Fuel"],
+        ans: "Turbo Fuel Stratified Injection",
+        exp: "<b>Technique :</b> Alliance du turbo et de l'injection directe d'essence.<br><b>Mémo :</b> Turbo + Fuel = Performance + Efficience."
+    },
+    {
+        q: "Dans quelle catégorie de rallye l'Audi Quattro s'est-elle imposée ?",
+        ops: ["Groupe A", "Groupe B", "WRC Plus", "Groupe 4"],
+        ans: "Groupe B",
+        exp: "<b>Histoire :</b> L'ère la plus sauvage et puissante du rallye mondial.<br><b>Mémo :</b> Le 'B' de 'Bête de course'."
+    },
+    {
+        q: "Quelle pilote française a marqué l'histoire d'Audi en rallye ?",
+        ops: ["M-C Beaumont", "Michèle Mouton", "Anne Baverey", "I. Patissier"],
+        ans: "Michèle Mouton",
+        exp: "<b>Sport :</b> La seule femme à avoir remporté des rallyes en championnat du monde.<br><b>Mémo :</b> Son nom est indissociable du Quattro S1."
+    },
+    {
+        q: "Combien de victoires Audi a-t-elle décrochées aux 24H du Mans ?",
+        ops: ["9 victoires", "13 victoires", "19 victoires", "7 victoires"],
+        ans: "13 victoires",
+        exp: "<b>Sport :</b> Audi a dominé l'endurance entre 2000 et 2014.<br><b>Mémo :</b> Un chiffre porte-bonheur pour les anneaux au Mans."
+    },
+    {
+        q: "Quelle prouesse l'Audi R10 TDI a-t-elle accomplie au Mans en 2006 ?",
+        ops: ["Record de vitesse", "Première victoire Diesel", "Course autonome", "Bio-carburant"],
+        ans: "Première victoire Diesel",
+        exp: "<b>Sport :</b> Elle a prouvé que le Diesel était une technologie de course performante.<br><b>Mémo :</b> <b>TDI</b> au Mans = Couple moteur monumental."
+    },
+    {
+        q: "Quel pilote détient le record de victoires au Mans avec Audi ?",
+        ops: ["Jacky Ickx", "H. Pescarolo", "Tom Kristensen", "Allan McNish"],
+        ans: "Tom Kristensen",
+        exp: "<b>Sport :</b> Surnommé 'Monsieur Le Mans' pour ses 9 succès totaux.<br><b>Mémo :</b> Tom Kristensen est le roi incontesté de la Sarthe."
+    },
+    {
+        q: "Quel championnat de tourisme Audi domine-t-elle en Allemagne ?",
+        ops: ["WTCC", "DTM", "BTCC", "Nascar"],
+        ans: "DTM",
+        exp: "<b>Sport :</b> Le Deutsche Tourenwagen Masters, où s'affrontent les berlines allemandes.<br><b>Mémo :</b> <b>D</b>TM = <b>D</b>eutsche (Allemand)."
+    },
+    {
+        q: "En quelle année Audi entrera-t-elle officiellement en Formule 1 ?",
+        ops: ["2024", "2026", "2025", "2028"],
+        ans: "2026",
+        exp: "<b>F1 :</b> Correspond au nouveau règlement moteur plus durable.<br><b>Mémo :</b> 2026 est le grand tournant technologique de la F1."
+    },
+    {
+        q: "Sur quelle structure d'écurie Audi s'appuie-t-elle pour la F1 ?",
+        ops: ["Williams", "Sauber", "McLaren", "Haas"],
+        ans: "Sauber",
+        exp: "<b>F1 :</b> Audi a racheté l'écurie suisse basée à Hinwil.<br><b>Mémo :</b> Sauber devient l'usine officielle des anneaux."
+    },
+    {
+        q: "Quel dirigeant d'expérience mène le projet F1 d'Audi ?",
+        ops: ["Mattia Binotto", "Andreas Seidl", "F. Vasseur", "C. Horner"],
+        ans: "Andreas Seidl",
+        exp: "<b>F1 :</b> Ancien de Porsche et McLaren, c'est un expert du sport automobile.<br><b>Mémo :</b> Seidl est le chef d'orchestre du futur moteur."
+    },
+    {
+        q: "Quelle est la raison majeure de l'entrée d'Audi en F1 en 2026 ?",
+        ops: ["100 ans", "Nouveau règlement moteur", "Départ Mercedes", "Pub uniquement"],
+        ans: "Nouveau règlement moteur",
+        exp: "<b>F1 :</b> L'utilisation de carburants 100% durables est la clé pour Audi.<br><b>Mémo :</b> Pas de F1 sans technologie éco-responsable."
+    },
+    {
+        q: "Quel ingénieur imposa le système Quattro et le moteur 5 cylindres ?",
+        ops: ["Ferdinand Piëch", "Herbert Diess", "M. Winterkorn", "B. Pischetsrieder"],
+        ans: "Ferdinand Piëch",
+        exp: "<b>Personne :</b> Petit-fils de Porsche, il a fait d'Audi une marque 'Premium'.<br><b>Mémo :</b> Piëch = l'ambition sans limite."
+    },
+    {
+        q: "Quelle voiture partage son ADN avec la Lamborghini Huracán ?",
+        ops: ["RS6", "TT RS", "R8", "RS7"],
+        ans: "R8",
+        exp: "<b>Modèle :</b> La supercar d'Audi utilisant le moteur V10 atmosphérique.<br><b>Mémo :</b> R8 est le sommet de la gamme sportive."
+    },
+    {
+        q: "Quel modèle iconique de 1998 a révolutionné le design Audi ?",
+        ops: ["A2", "TT", "A4", "Q7"],
+        ans: "TT",
+        exp: "<b>Modèle :</b> Inspiré du courant Bauhaus, il est devenu une icône de style.<br><b>Mémo :</b> <b>T</b>T = <b>T</b>radition + <b>T</b>echnologie."
+    },
+    {
+        q: "Quel designer est à l'origine de l'élégante Audi A5 ?",
+        ops: ["Peter Schreyer", "Chris Bangle", "Walter de Silva", "Marc Lichte"],
+        ans: "Walter de Silva",
+        exp: "<b>Personne :</b> Il l'a qualifiée de 'plus belle voiture' qu'il ait dessinée.<br><b>Mémo :</b> De Silva = L'élégance latine au service d'Audi."
+    },
+    {
+        q: "Quelle branche est dédiée aux modèles haute performance « RS » ?",
+        ops: ["Motorsport", "Audi Sport GmbH", "Exclusive", "Engineering"],
+        ans: "Audi Sport GmbH",
+        exp: "<b>Note :</b> Anciennement nommée Quattro GmbH.<br><b>Mémo :</b> <b>R</b>enn<b>S</b>port (RS) est géré par Audi Sport."
+    },
+    {
+        q: "Quel modèle mythique des années 90 fut développé avec Porsche ?",
+        ops: ["RS3", "RS2 Avant", "80 Quattro", "V8"],
+        ans: "RS2 Avant",
+        exp: "<b>Modèle :</b> Le break de chasse qui a lancé la légende RS.<br><b>Mémo :</b> On y retrouve des pièces de Porsche 911 (rétros, freins)."
+    },
+    {
+        q: "Quel pilote de F1 est l'ambassadeur de la gamme électrique ?",
+        ops: ["Vettel", "Nico Hülkenberg", "C. Sainz", "M. Ekström"],
+        ans: "Nico Hülkenberg",
+        exp: "<b>F1 :</b> Il assure le lien entre la compétition et le futur de série.<br><b>Mémo :</b> 'Hulk' est le visage d'Audi en Formule 1."
+    },
+    {
+        q: "Quel concept préfigure le futur du luxe et de l'autonomie ?",
+        ops: ["AI:CON", "Avus", "Rosemeyer", "Nanuk"],
+        ans: "AI:CON",
+        exp: "<b>Concept :</b> Une voiture sans volant ni pédales pour un confort total.<br><b>Mémo :</b> <b>AI</b> pour Intelligence Artificielle."
     }
-    // ... Les 27 autres questions suivent cette structure.
 ];
 
 let currentIdx = 0;
@@ -171,7 +297,7 @@ function showQuestion() {
     updateDisplay();
 
     const data = shuffledQuestions[currentIdx];
-    document.getElementById('q-number').innerText = `Question ${currentIdx + 1} / ${shuffledQuestions.length}`;
+    document.getElementById('q-number').innerText = `Épreuve ${currentIdx + 1} / ${shuffledQuestions.length}`;
     document.getElementById('question-text').innerText = data.q;
     
     const container = document.getElementById('options-container');
@@ -231,7 +357,7 @@ function nextQuestion() {
 function endGame() {
     document.getElementById('game-zone').classList.add('hidden');
     document.getElementById('score-board').style.display = 'block';
-    document.getElementById('final-score').innerText = `${score} / ${shuffledQuestions.length}`;
+    document.getElementById('final-score').innerText = `Résultat : ${score} / ${shuffledQuestions.length}`;
 }
 
 initQuiz();
