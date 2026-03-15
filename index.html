@@ -1397,6 +1397,12 @@ function showQuestion() {
     
     document.getElementById('explanation-box').style.display = 'none';
     document.getElementById('next-btn').style.display = 'none';
+
+    const counterElement = document.getElementById('question-counter'); // Vérifie l'ID dans ton HTML
+    if (counterElement) {
+        counterElement.innerText = `${currentIdx + 1} / 30`;
+    
+    
     timeLeft = 30;
     updateDisplay();
 
