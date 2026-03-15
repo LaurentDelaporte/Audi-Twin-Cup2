@@ -1393,7 +1393,7 @@ function initQuiz() {
 }
 
 function showQuestion() {
-    if (currentIdx >= shuffledQuestions.length) return endGame();
+    if (currentIdx >= 30) return endGame();
     
     document.getElementById('explanation-box').style.display = 'none';
     document.getElementById('next-btn').style.display = 'none';
