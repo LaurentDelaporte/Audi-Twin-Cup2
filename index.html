@@ -762,7 +762,623 @@ const questionsData = [
     ops: ["Night Vision Assistant", "Thermal Cam", "Dark Eye", "Radar X"],
     ans: "Night Vision Assistant",
     exp: "<b>Note :</b> Une caméra thermique affiche les êtres vivants en jaune ou rouge sur le tableau de bord.<br><b>Mémo :</b> Voir dans le noir."
-}
+},
+    {
+        q: "Au Salon de Genève 1980, quel véhicule servait de base technique exposée pour présenter le système Quattro ?",
+        ops: ["Un châssis d'Audi 80", "Un châssis de VW Iltis", "Une coque de 200 Turbo", "Une maquette en argile"],
+        ans: "Un châssis de VW Iltis",
+        exp: "<b>Note :</b> Le système fut testé sur ce 4x4 militaire avant d'être adapté à la route.<br><b>Mémo :</b> Iltis = L'ancêtre rustique."
+    },
+    {
+        q: "À quel salon et en quelle année fut présenté l'Audi ASF, structure nue de la future A8 ?",
+        ops: ["Francfort 1993", "Genève 1991", "Tokyo 1995", "Paris 1992"],
+        ans: "Francfort 1993",
+        exp: "<b>Note :</b> L'Audi Space Frame (ASF) fut la sensation du salon par son aspect chrome poli.<br><b>Mémo :</b> 1993 = La structure avant le produit."
+    },
+    {
+        q: "L'Audi Avus Quattro (Tokyo 1991) portait le nom d'un circuit célèbre. Où se situait-il ?",
+        ops: ["Près de Munich", "À Berlin", "Au Japon", "En Autriche"],
+        ans: "À Berlin",
+        exp: "<b>Note :</b> L'AVUS était célèbre pour ses deux lignes droites et son virage relevé en briques.<br><b>Mémo :</b> AVUS = Berlin Speed."
+    },
+    {
+        q: "Quel concept de 1999 au Salon de Francfort annonçait l'arrivée imminente de la Allroad ?",
+        ops: ["Audi Steppenwolf", "Allroad Quattro Concept", "Audi Pikes Peak", "Audi Avantissimo"],
+        ans: "Allroad Quattro Concept",
+        exp: "<b>Note :</b> Il présentait déjà la suspension pneumatique à hauteur variable.<br><b>Mémo :</b> 1999 = Le break s'élève."
+    },
+    {
+        q: "Au Salon de Francfort 1995, le concept TT a éclipsé la concurrence. Qui en était le designer extérieur ?",
+        ops: ["Freeman Thomas", "Peter Schreyer", "Walter de Silva", "Marc Lichte"],
+        ans: "Freeman Thomas",
+        exp: "<b>Note :</b> Sous la direction de J Mays, il a créé cette forme géométrique pure inspirée du Bauhaus.<br><b>Mémo :</b> Freeman = L'homme libre du design."
+    },
+    {
+        q: "Quel modèle fut présenté au Salon de Genève 2004 comme le futur du design Audi par Walter de Silva ?",
+        ops: ["Audi A6 (C6)", "Audi Nuvolari", "Audi A5", "Audi Q7"],
+        ans: "Audi A6 (C6)",
+        exp: "<b>Note :</b> C'est la première Audi de série à arborer la calandre Singleframe complète.<br><b>Mémo :</b> 2004 = L'ère de la calandre unique."
+    },
+    {
+        q: "Le concept 'Audi Le Mans Quattro' (Francfort 2003) possédait quel type d'éclairage révolutionnaire ?",
+        ops: ["Projecteurs Laser", "Phares intégralement à LED", "Xénon directionnel", "Faisceau infrarouge"],
+        ans: "Phares intégralement à LED",
+        exp: "<b>Note :</b> Ce fut l'une des premières mondiales pour cette technologie d'éclairage.<br><b>Mémo :</b> LED = Signature Audi dès 2003."
+    },
+    {
+        q: "En 1981, le projet 'Auto 2000' visait une consommation record. Quel Cx (coefficient de traînée) affichait-il ?",
+        ops: ["0.35", "0.22", "0.30", "0.28"],
+        ans: "0.22",
+        exp: "<b>Note :</b> Un chiffre incroyable pour l'époque, obtenu grâce à un arrière tronqué et des carénages de roues.<br><b>Mémo :</b> 0.22 = Glisse parfaite."
+    },
+    {
+        q: "Quel concept de 2014 au Salon de Los Angeles a marqué le début de l'ère Marc Lichte ?",
+        ops: ["Audi Prologue", "Audi E-tron GT", "Audi PB18", "Audi Elaine"],
+        ans: "Audi Prologue",
+        exp: "<b>Note :</b> Ce coupé géant annonçait le style des futures A6, A7 et A8.<br><b>Mémo :</b> Prologue = Le premier chapitre du futur."
+    },
+    {
+        q: "À quel salon fut dévoilée l'Audi R8 V10 pour la première fois en 2009 ?",
+        ops: ["Genève", "Detroit", "Francfort", "Shanghai"],
+        ans: "Detroit",
+        exp: "<b>Note :</b> Le salon américain fut choisi pour souligner l'importance du marché US pour la R8.<br><b>Mémo :</b> Detroit = Muscle et V10."
+    },
+    {
+        q: "Le concept 'Audi Pikes Peak Quattro' (2003) préfigurait quel modèle de série ?",
+        ops: ["L'Audi Q7", "L'Audi Q5", "L'Audi Allroad", "L'Audi Q8"],
+        ans: "L'Audi Q7",
+        exp: "<b>Note :</b> Il montrait la volonté d'Audi d'entrer dans le segment des SUV de luxe à 7 places.<br><b>Mémo :</b> Pikes Peak = Sommet des SUV."
+    },
+    {
+        q: "Quel prototype de 2010 rendait hommage aux 30 ans de la Quattro originale avec un châssis court ?",
+        ops: ["Audi Quattro Concept", "Audi Sport Quattro Concept", "Audi Nanuk", "Audi E-tron Spyder"],
+        ans: "Audi Quattro Concept",
+        exp: "<b>Note :</b> Basé sur une RS5 raccourcie, il était peint en blanc nacré avec un intérieur minimaliste.<br><b>Mémo :</b> 2010 = 30 ans de légende."
+    },
+    {
+        q: "Au Salon de Paris 2010, Audi a présenté une citadine électrique futuriste. Quel était son nom ?",
+        ops: ["Audi A1 e-tron", "Audi Urban Concept", "Audi A2 Concept", "Audi e-citadine"],
+        ans: "Audi A1 e-tron",
+        exp: "<b>Note :</b> Elle possédait un petit moteur rotatif servant de prolongateur d'autonomie.<br><b>Mémo :</b> A1 + Wankel = Innovation perdue."
+    },
+    {
+        q: "Quel concept de 2001 proposait une vision de break de très haut luxe avec un V8 biturbo de 430ch ?",
+        ops: ["Audi Avantissimo", "Audi A8 Avant", "Audi Shooting Brake", "Audi Steppenwolf"],
+        ans: "Audi Avantissimo",
+        exp: "<b>Note :</b> Bien que jamais produit, il a dicté le luxe intérieur de l'A8 D3.<br><b>Mémo :</b> Avant + Massimo = Le maximum du break."
+    },
+    {
+        q: "Le concept 'Audi Rosemeyer' (2000) arborait une calandre immense. Combien de cylindres avait son moteur ?",
+        ops: ["V8", "V10", "W12", "W16"],
+        ans: "W16",
+        exp: "<b>Note :</b> Un hommage aux moteurs de l'Union Auto des années 30, préfigurant l'ingénierie du groupe VW.<br><b>Mémo :</b> W16 = La force brute."
+    },
+    {
+        q: "En 2005, quel concept annonçait les lignes de l'Audi A3 cabriolet ?",
+        ops: ["Audi Shooting Brake Concept", "Audi Roadjet", "Audi Cross Coupé", "Audi A3 Open"],
+        ans: "Audi Shooting Brake Concept",
+        exp: "<b>Note :</b> Présenté à Tokyo, il affichait une face avant très agressive qui sera reprise sur l'A3 facelift.<br><b>Mémo :</b> Tokyo 2005 = A3 musclée."
+    },
+    {
+        q: "Quel salon a accueilli la première de l'Audi RS6 (C5) avec son V8 biturbo cosworth ?",
+        ops: ["Genève 2002", "Francfort 2001", "Paris 2002", "Detroit 2002"],
+        ans: "Genève 2002",
+        exp: "<b>Note :</b> Elle fut la première RS développée en masse avec l'aide de Cosworth pour les culasses.<br><b>Mémo :</b> 2002 = Le monstre est né."
+    },
+    {
+        q: "Le concept 'Audi Quartz' (1981) fut dessiné par un carrossier italien célèbre. Lequel ?",
+        ops: ["Pininfarina", "Italdesign", "Bertone", "Zagato"],
+        ans: "Pininfarina",
+        exp: "<b>Note :</b> Basé sur une Quattro, il proposait une carrosserie bien plus légère en matériaux composites.<br><b>Mémo :</b> Quartz = Pininfarina."
+    },
+    {
+        q: "À quel salon Audi a-t-il présenté le concept 'E-tron' original en orange vif ?",
+        ops: ["Francfort 2009", "Genève 2010", "Paris 2008", "Tokyo 2009"],
+        ans: "Francfort 2009",
+        exp: "<b>Note :</b> C'était une R8 électrique avec quatre moteurs (un par roue).<br><b>Mémo :</b> 2009 = Début de l'ère E-tron."
+    },
+    {
+        q: "Quel concept de 2017 au Salon de Shanghai présentait la conduite autonome de niveau 4 ?",
+        ops: ["Audi E-tron Sportback concept", "Audi Elaine", "Audi Aicon", "Audi Pop.Up"],
+        ans: "Audi E-tron Sportback concept",
+        exp: "<b>Note :</b> Il montrait que le futur de l'électrique serait aussi émotionnel et design.<br><b>Mémo :</b> Shanghai = Marché électrique n°1."
+    },
+    {
+        q: "Au Salon de Genève 2019, quel petit SUV électrique fut la star du stand ?",
+        ops: ["Audi Q4 e-tron concept", "Audi e-tron GT", "Audi Q2 e-tron", "Audi AI:ME"],
+        ans: "Audi Q4 e-tron concept",
+        exp: "<b>Note :</b> Basé sur la plateforme MEB, il préfigurait le volume de vente électrique majeur de la marque.<br><b>Mémo :</b> Q4 = Électrique pour tous."
+    },
+    {
+        q: "Quel concept de 1973 célébrait les 100 ans de la marque NSU (intégrée à Audi) ?",
+        ops: ["Audi Ro80", "Audi NSU Trapeze", "Audi 80 GT", "Audi Quattro Prototype"],
+        ans: "Audi NSU Trapeze",
+        exp: "<b>Note :</b> Dessiné par Bertone, il possédait un moteur rotatif central arrière.<br><b>Mémo :</b> Trapeze = Bertone + NSU."
+    },
+    {
+        q: "Le concept 'Audi Skysphere' (2021) s'inspire d'un roadster classique de l'histoire du groupe. Lequel ?",
+        ops: ["Horch 853A", "Wanderer W25", "Audi Front", "DKW F9"],
+        ans: "Horch 853A",
+        exp: "<b>Note :</b> On retrouve les proportions du long capot et l'élégance des années 30.<br><b>Mémo :</b> Skysphere = Horch moderne."
+    },
+    {
+        q: "À quel salon fut présentée l'Audi Quattro S1 'E2' avec ses appendices aérodynamiques massifs ?",
+        ops: ["Francfort 1985", "San Remo 1985", "Genève 1986", "Paris 1985"],
+        ans: "Francfort 1985",
+        exp: "<b>Note :</b> C'est la version finale et la plus monstrueuse de la période Groupe B.<br><b>Mémo :</b> 1985 = La pelle à neige."
+    },
+    {
+        q: "En 2015, Audi présente un concept de SUV à hydrogène. Quel était son nom ?",
+        ops: ["Audi h-tron quattro concept", "Audi A7 h-tron", "Audi Q6 Hydrogen", "Audi Clean Energy"],
+        ans: "Audi h-tron quattro concept",
+        exp: "<b>Note :</b> Il promettait un plein en 4 minutes et 600km d'autonomie.<br><b>Mémo :</b> h-tron = Hydrogène."
+    },
+
+    // --- THÈME : PERSONNAGES & DIRIGEANTS ---
+    {
+        q: "Ferdinand Piëch a quitté Porsche pour Audi après un désaccord familial. Quel était son premier poste ?",
+        ops: ["Directeur technique", "Chef du développement moteur", "PDG", "Responsable carrosserie"],
+        ans: "Chef du développement moteur",
+        exp: "<b>Note :</b> C'est là qu'il a conçu le fameux moteur 5 cylindres.<br><b>Mémo :</b> Piëch = Le moteur de la marque."
+    },
+    {
+        q: "Quelle pilote a fini 2ème du championnat du monde des rallyes 1982 sur Audi ?",
+        ops: ["Michèle Mouton", "Fabrizia Pons", "Jutta Kleinschmidt", "Pat Moss"],
+        ans: "Michèle Mouton",
+        exp: "<b>Note :</b> Elle a perdu le titre de peu face à Walter Röhrl (qui n'était pas encore chez Audi).<br><b>Mémo :</b> Michèle = La reine du Quattro."
+    },
+    {
+        q: "Qui était le directeur d'Audi Sport lors des premières victoires au Mans en 2000 ?",
+        ops: ["Dr. Wolfgang Ullrich", "Roland Gumpert", "Andreas Seidl", "Reinhold Joest"],
+        ans: "Dr. Wolfgang Ullrich",
+        exp: "<b>Note :</b> Il a dirigé le sport chez Audi pendant 23 ans avec un succès colossal.<br><b>Mémo :</b> Dr Ullrich = L'architecte du Mans."
+    },
+    {
+        q: "Quel designer est responsable de la calandre 'Singleframe' introduite en 2004 ?",
+        ops: ["Walter de Silva", "Marc Lichte", "Peter Schreyer", "Freeman Thomas"],
+        ans: "Walter de Silva",
+        exp: "<b>Note :</b> Inspiré par les Auto Union des années 30, il a voulu unifier le visage d'Audi.<br><b>Mémo :</b> De Silva = Le visage moderne."
+    },
+    {
+        q: "August Horch a fondé Audi après avoir été banni de sa propre marque. Que signifie 'Audi' en latin ?",
+        ops: ["Écoute", "Vitesse", "Union", "Force"],
+        ans: "Écoute",
+        exp: "<b>Note :</b> 'Horch' signifie écoute en allemand, il l'a simplement traduit en latin.<br><b>Mémo :</b> Horch = Audi = Écoute."
+    },
+    {
+        q: "Quel pilote a remporté le plus de titres DTM pour Audi ?",
+        ops: ["Mattias Ekström", "Timo Scheider", "René Rast", "Hans-Joachim Stuck"],
+        ans: "René Rast",
+        exp: "<b>Note :</b> Il a remporté 3 titres en seulement 4 ans, une performance historique.<br><b>Mémo :</b> Rast = Le rapide."
+    },
+    {
+        q: "Qui a dessiné l'Audi A2, pionnière de l'aluminium et de l'aérodynamique ?",
+        ops: ["Peter Schreyer", "Luc Donckerwolke", "Walter de Silva", "Stefan Sielaff"],
+        ans: "Peter Schreyer",
+        exp: "<b>Note :</b> Avant de partir chez Kia, il a signé le design iconique du TT et de l'A2.<br><b>Mémo :</b> Schreyer = L'audace."
+    },
+    {
+        q: "Quel dirigeant a succédé à Markus Duesmann à la tête d'Audi en 2023 ?",
+        ops: ["Gernot Döllner", "Bram Schot", "Rupert Stadler", "Oliver Blume"],
+        ans: "Gernot Döllner",
+        exp: "<b>Note :</b> Il vient de Porsche et a pour mission d'accélérer la transition électrique.<br><b>Mémo :</b> Döllner = Le nouveau cap."
+    },
+    {
+        q: "Qui était le copilote de Michèle Mouton lors de ses victoires historiques ?",
+        ops: ["Fabrizia Pons", "Christian Geistdörfer", "Jean Todt", "Daniel Elena"],
+        ans: "Fabrizia Pons",
+        exp: "<b>Note :</b> Le duo féminin était redouté par tous les pilotes masculins du WRC.<br><b>Mémo :</b> Pons = La boussole."
+    },
+    {
+        q: "Quel ingénieur a conçu le moteur W16 de la Bugatti Veyron, après avoir testé l'architecture chez Audi ?",
+        ops: ["Ferdinand Piëch", "Karl-Heinz Neumann", "Ulrich Hackenberg", "Wolfgang Hatz"],
+        ans: "Ferdinand Piëch",
+        exp: "<b>Note :</b> Il a dessiné le schéma du moteur sur une enveloppe lors d'un voyage en train au Japon.<br><b>Mémo :</b> Piëch = Le génie des cylindres."
+    },
+    {
+        q: "Qui est le pilote français ayant remporté 3 fois les 24H du Mans avec Audi ?",
+        ops: ["Benoît Tréluyer", "Romain Dumas", "Loïc Duval", "Sébastien Bourdais"],
+        ans: "Benoît Tréluyer",
+        exp: "<b>Note :</b> Il formait un trio légendaire avec André Lotterer et Marcel Fässler.<br><b>Mémo :</b> Tréluyer = Le triplé français."
+    },
+    {
+        q: "Quel designer a succédé à Walter de Silva à la tête du design du groupe VW ?",
+        ops: ["Michael Mauer", "Marc Lichte", "Klaus Zyciora", "Peter Schreyer"],
+        ans: "Michael Mauer",
+        exp: "<b>Note :</b> Il supervise aujourd'hui toutes les marques du groupe tout en restant chez Porsche.<br><b>Mémo :</b> Mauer = Le superviseur."
+    },
+    {
+        q: "Qui était le fondateur de DKW, la marque aux moteurs 2-temps de l'Auto Union ?",
+        ops: ["Jørgen Rasmussen", "August Horch", "Siegfried Bettmann", "Robert Bosch"],
+        ans: "Jørgen Rasmussen",
+        exp: "<b>Note :</b> Ce Danois a fait de DKW le plus grand constructeur de motos au monde avant-guerre.<br><b>Mémo :</b> Rasmussen = La force du 2-temps."
+    },
+    {
+        q: "Quel pilote a battu le record de Pikes Peak en 1987 sur la S1 ?",
+        ops: ["Walter Röhrl", "Bobby Unser", "Michèle Mouton", "Ari Vatanen"],
+        ans: "Walter Röhrl",
+        exp: "<b>Note :</b> Il fut le premier à descendre sous les 11 minutes sur la piste en terre.<br><b>Mémo :</b> Röhrl = Le génie de la montagne."
+    },
+    {
+        q: "Qui a nommé Mattia Binotto à la tête du projet F1 d'Audi ?",
+        ops: ["Gernot Döllner", "Oliver Blume", "Herbert Diess", "Bernie Ecclestone"],
+        ans: "Gernot Döllner",
+        exp: "<b>Note :</b> Döllner a restructuré le projet pour donner les pleins pouvoirs à Binotto.<br><b>Mémo :</b> Duo Döllner-Binotto."
+    },
+    {
+        q: "Quel ingénieur est considéré comme le 'père' spirituel de la transmission Quattro ?",
+        ops: ["Jörg Bensinger", "Roland Gumpert", "Ferdinand Piëch", "Hans Nedvidek"],
+        ans: "Jörg Bensinger",
+        exp: "<b>Note :</b> C'est lui qui a eu l'idée en observant les capacités du VW Iltis dans la neige.<br><b>Mémo :</b> Bensinger = L'étincelle."
+    },
+    {
+        q: "Qui était le pilote italien star des Auto Union Type C dans les années 30 ?",
+        ops: ["Tazio Nuvolari", "Achille Varzi", "Giuseppe Farina", "Enzo Ferrari"],
+        ans: "Tazio Nuvolari",
+        exp: "<b>Note :</b> Surnommé 'Le fils du vent', il était l'un des rares à dompter le moteur central arrière.<br><b>Mémo :</b> Nuvolari = La légende italienne."
+    },
+    {
+        q: "Quel PDG d'Audi a été arrêté en 2018 suite à l'affaire du Dieselgate ?",
+        ops: ["Rupert Stadler", "Martin Winterkorn", "Bram Schot", "Herbert Diess"],
+        ans: "Rupert Stadler",
+        exp: "<b>Note :</b> Il est resté plusieurs mois en détention avant d'être remplacé par Bram Schot.<br><b>Mémo :</b> Stadler = La chute."
+    },
+    {
+        q: "Qui est le responsable actuel du design Audi (depuis 2014) ?",
+        ops: ["Marc Lichte", "Walter de Silva", "Peter Schreyer", "Andreas Mindt"],
+        ans: "Marc Lichte",
+        exp: "<b>Note :</b> Il a imposé un style plus horizontal et technologique avec des lignes très tendues.<br><b>Mémo :</b> Lichte = La lumière du design."
+    },
+    {
+        q: "Quel pilote de F1 a rejoint Audi/Sauber pour préparer l'arrivée en 2026 ?",
+        ops: ["Nico Hülkenberg", "Sebastian Vettel", "Mick Schumacher", "Carlos Sainz"],
+        ans: "Nico Hülkenberg",
+        exp: "<b>Note :</b> Il apporte son immense expérience technique pour stabiliser l'écurie.<br><b>Mémo :</b> Hulk = Le pilier allemand."
+    },
+    {
+        q: "Qui a dirigé la création de l'Audi R8 originale ?",
+        ops: ["Roland Gumpert", "Wolfgang Egger", "Frank Lamberty", "Peter Schreyer"],
+        ans: "Frank Lamberty",
+        exp: "<b>Note :</b> Il est le designer principal de la R8, s'inspirant des prototypes du Mans.<br><b>Mémo :</b> Lamberty = Le père de la R8."
+    },
+    {
+        q: "Quel était le surnom de Bernd Rosemeyer ?",
+        ops: ["Le fils du vent", "Le brouillard d'argent", "Le pilote sans peur", "L'étoile de Saxe"],
+        ans: "Le brouillard d'argent",
+        exp: "<b>Note :</b> Référence à sa vitesse et à sa mort tragique dans le brouillard lors d'un record.<br><b>Mémo :</b> Rosemeyer = L'étoile filante."
+    },
+    {
+        q: "Qui est l'ingénieur à l'origine du châssis en aluminium ASF ?",
+        ops: ["Heinrich Timm", "Ulrich Hackenberg", "Ferdinand Piëch", "Wolfgang Hatz"],
+        ans: "Heinrich Timm",
+        exp: "<b>Note :</b> Il a travaillé pendant 10 ans avec Alcoa pour rendre l'aluminium industriellement viable.<br><b>Mémo :</b> Timm = L'homme de l'alu."
+    },
+    {
+        q: "Quel pilote Audi a remporté le championnat du monde de Rallycross (WRX) en 2016 ?",
+        ops: ["Mattias Ekström", "Petter Solberg", "Johan Kristoffersson", "Sébastien Loeb"],
+        ans: "Mattias Ekström",
+        exp: "<b>Note :</b> Il a gagné avec sa propre équipe, EKS, soutenue par Audi Sport.<br><b>Mémo :</b> Ekström = Polyvalence totale."
+    },
+    {
+        q: "Qui a fondé la marque Wanderer, l'un des 4 anneaux ?",
+        ops: ["Winkelhofer & Jaenicke", "August Horch", "Hans Wanderer", "Gottlieb Daimler"],
+        ans: "Winkelhofer & Jaenicke",
+        exp: "<b>Note :</b> Ils ont commencé par des vélos avant de devenir un pilier de l'Auto Union.<br><b>Mémo :</b> Wanderer = Les cyclistes."
+    },
+    {
+        q: "Quel était le nom de code interne du projet secret mené par Jörg Bensinger qui a abouti à la transmission Quattro ?",
+        ops: ["Projet 262", "Entwicklung 154", "Projet X-4", "Audi-Iltis 01"],
+        ans: "Entwicklung 154",
+        exp: "<b>Note :</b> Le projet fut mené avec une équipe réduite pour ne pas alerter la direction de Volkswagen avant que le prototype ne soit probant.<br><b>Mémo :</b> E154 = L'éveil du Quattro."
+    },
+    {
+        q: "Quelle est la particularité technique unique du moteur de l'Audi A2 1.2 TDI '3 Litres' ?",
+        ops: ["Bloc en magnésium", "Suspensions en aluminium brossé", "Pneus à ultra-basse résistance", "Tous les trois"],
+        ans: "Tous les trois",
+        exp: "<b>Note :</b> Pour atteindre 2.99L/100km, Audi a utilisé des alliages légers partout, même pour les tambours de freins arrière.<br><b>Mémo :</b> A2 3L = Chasse au gramme absolue."
+    },
+    {
+        q: "Sur le premier moteur 5 cylindres diesel (Audi 100), quel était l'ordre d'allumage spécifique ?",
+        ops: ["1-2-4-5-3", "1-3-5-4-2", "1-2-3-4-5", "1-4-2-3-5"],
+        ans: "1-2-4-5-3",
+        exp: "<b>Technique :</b> Cet ordre permet d'équilibrer les moments d'inertie du second degré, typiques du 5 cylindres.<br><b>Mémo :</b> 1-2-4-5-3 = La mélodie asymétrique."
+    },
+    {
+        q: "Quel alliage fut utilisé pour la première fois sur les culasses de l'Audi RS2 ?",
+        ops: ["Aluminium-Silicium", "Magnésium-Titane", "Alu-Cobalt", "Acier forgé"],
+        ans: "Aluminium-Silicium",
+        exp: "<b>Note :</b> Porsche, qui assemblait la voiture, a imposé cet alliage pour supporter la pression accrue du turbo KKK.<br><b>Mémo :</b> RS2 = ADN Porsche."
+    },
+    {
+        q: "Quelle était la valeur exacte du Cx (coefficient de traînée) du concept Audi Aero de 1981 ?",
+        ops: ["0.22", "0.25", "0.19", "0.28"],
+        ans: "0.22",
+        exp: "<b>Note :</b> Ce chiffre reste aujourd'hui encore une référence pour une berline 4 portes.<br><b>Mémo :</b> Aero 81 = La fin de la résistance."
+    },
+
+    // --- RALLYE & COMPÉTITION HORS-PISTE ---
+    {
+        q: "En 1986, Audi a testé un prototype de Rallye avec un moteur central. Comment s'appelait-il ?",
+        ops: ["Sport Quattro RS", "Audi Mittelmotor", "Group S Prototype", "Audi S2 Evo"],
+        ans: "Group S Prototype",
+        exp: "<b>Note :</b> Développé en secret à Desna, ce prototype devait remplacer la S1 avant que le Groupe B ne soit interdit.<br><b>Mémo :</b> Groupe S = Le chaînon manquant."
+    },
+    {
+        q: "Quel pilote fut le premier à faire gagner une Audi Quattro en Championnat du Monde (WRC) ?",
+        ops: ["Hannu Mikkola", "Franz Wittmann", "Michèle Mouton", "Stig Blomqvist"],
+        ans: "Hannu Mikkola",
+        exp: "<b>Note :</b> Victoire au Rallye de Suède 1981, seulement quelques mois après l'homologation.<br><b>Mémo :</b> Mikkola = Le premier pionnier."
+    },
+    {
+        q: "Quel composant de la boîte de vitesses de la Quattro S1 E2 permettait de changer de rapport en 0,01 seconde ?",
+        ops: ["Embrayage piloté", "Boîte PDK", "Transmission séquentielle", "Double embrayage précoce"],
+        ans: "Double embrayage précoce",
+        exp: "<b>Note :</b> C'est l'ancêtre direct de la boîte DSG/S-tronic actuelle, testé par Walter Röhrl en course.<br><b>Mémo :</b> S1 E2 = Le laboratoire de la DSG."
+    },
+    {
+        q: "Combien d'exemplaires de l'Audi Sport Quattro 'Short Wheelbase' ont été produits pour l'homologation ?",
+        ops: ["200", "214", "224", "164"],
+        ans: "214",
+        exp: "<b>Note :</b> Dont 164 destinés à la route (Street version).<br><b>Mémo :</b> 214 = Le chiffre de la rareté."
+    },
+    {
+        q: "Dans quelle ville autrichienne Ferdinand Piëch a-t-il effectué les premiers tests secrets de la Quattro ?",
+        ops: ["Turracher Höhe", "Graz", "Innsbruck", "Gmünd"],
+        ans: "Turracher Höhe",
+        exp: "<b>Note :</b> Une pente à 33% enneigée où le prototype a humilié tous les autres véhicules.<br><b>Mémo :</b> Turracher = Le baptême du feu (ou de la glace)."
+    },
+
+    // --- PROTO ET CONCEPT-CARS INÉDITS ---
+    {
+        q: "L'Audi Quartz (1981) par Pininfarina utilisait une carrosserie composée de quel matériau inhabituel ?",
+        ops: ["Kevlar", "Fibre de carbone", "Polycarbonate", "Nid d'abeille aluminium"],
+        ans: "Kevlar",
+        exp: "<b>Note :</b> Cela permettait un gain de poids de 90kg par rapport à une Quattro standard.<br><b>Mémo :</b> Quartz = Résistance Kevlar."
+    },
+    {
+        q: "Quel était le nom du prototype de 1974 qui a inspiré l'Audi 100 C2 ?",
+        ops: ["Projet 42", "Projet Ro80 II", "Audi 200 Prototype", "Audi 100 Coupé S Special"],
+        ans: "Projet 42",
+        exp: "<b>Note :</b> Il devait initialement recevoir un moteur rotatif NSU avant d'être motorisé par un 5 cylindres.<br><b>Mémo :</b> Projet 42 = La réponse à tout."
+    },
+    {
+        q: "Le concept Audi Nanuk (2013) utilisait un châssis provenant d'une autre marque du groupe. Laquelle ?",
+        ops: ["Lamborghini", "Bentley", "Porsche", "Bugatti"],
+        ans: "Lamborghini",
+        exp: "<b>Note :</b> Il partageait ses bases avec le concept Lamborghini Parcour d'Italdesign.<br><b>Mémo :</b> Nanuk = Le taureau déguisé en ours."
+    },
+    {
+        q: "Quel designer a dessiné l'Audi Rosemeyer (2000) ?",
+        ops: ["Stefan Sielaff", "Frank Lamberty", "Peter Schreyer", "Walter de Silva"],
+        ans: "Stefan Sielaff",
+        exp: "<b>Note :</b> Il s'est inspiré directement des croquis de carrosseries aérodynamiques des années 30.<br><b>Mémo :</b> Sielaff = Rétro-futurisme."
+    },
+
+    // --- FORMULE 1 & DÉTAILS DE L'ENGAGEMENT ---
+    {
+        q: "Comment s'appelle le banc d'essai spécifique utilisé par Audi pour tester le moteur F1 à Neubourg ?",
+        ops: ["Dyno-Four", "Le Simulateur d'Ingolstadt", "Le banc haute altitude", "Le banc dynamique hybride"],
+        ans: "Le banc dynamique hybride",
+        exp: "<b>Note :</b> Il permet de simuler la charge thermique et électrique d'un tour de circuit complet.<br><b>Mémo :</b> Dynamique = Temps réel."
+    },
+    {
+        q: "Quel est le diamètre maximal autorisé pour le turbocompresseur Audi en F1 2026 ?",
+        ops: ["Variable", "Fixé par le règlement technique", "Identique au V10", "Limité à 100mm"],
+        ans: "Fixé par le règlement technique",
+        exp: "<b>Note :</b> Contrairement aux années précédentes, de nombreuses pièces du turbo sont désormais standardisées pour limiter les coûts.<br><b>Mémo :</b> Règlement = Standardisation."
+    },
+
+    // --- HISTOIRE ET POLITIQUES DE MARQUE ---
+    {
+        q: "En 1964, Volkswagen rachète Audi à Mercedes-Benz. Quel fut le prix approximatif de la transaction ?",
+        ops: ["297 millions de DM", "1 milliard de DM", "150 millions de DM", "500 millions de DM"],
+        ans: "297 millions de DM",
+        exp: "<b>Note :</b> Mercedes pensait qu'Audi n'avait aucun avenir à cause de ses moteurs 2-temps obsolètes.<br><b>Mémo :</b> 297 = L'affaire du siècle."
+    },
+    {
+        q: "Qui a écrit le livre blanc 'Vorsprung durch Technik' définissant la stratégie de la marque en 1971 ?",
+        ops: ["Hans Bauer", "Ferdinand Piëch", "August Horch", "Ludwig Kraus"],
+        ans: "Hans Bauer",
+        exp: "<b>Note :</b> Bauer était responsable de la publicité et cherchait un moyen d'exprimer la diversité technique d'Audi NSU.<br><b>Mémo :</b> Bauer = Le père du slogan."
+    },
+    {
+        q: "Quel était le nom de l'usine Audi à Bruxelles avant qu'elle ne produise l'e-tron ?",
+        ops: ["Volkswagen Forest", "Audi Belgium", "D'Ieteren Factory", "Union Automobile"],
+        ans: "Volkswagen Forest",
+        exp: "<b>Note :</b> L'usine produisait des Coccinelles puis des Golf avant d'être transférée à Audi en 2007.<br><b>Mémo :</b> Forest = De la Golf à l'électrique."
+    },
+    {
+        q: "Quelle est la seule Audi de l'histoire à avoir utilisé un moteur à 4 cylindres à plat (Boxer) ?",
+        ops: ["L'Audi Front", "L'Audi Type P", "Aucune", "L'Audi 50"],
+        ans: "L'Audi Type P",
+        exp: "<b>Note :</b> Sortie en 1931, elle utilisait un moteur dérivé de chez DKW mais à 4 temps.<br><b>Mémo :</b> Type P = L'exception Boxer."
+    },
+
+    // --- SALONS & ÉVÉNEMENTS ---
+    {
+        q: "Au Salon de Francfort 1991, l'Audi Quattro Spyder avait une carrosserie faite d'un matériau spécifique. Lequel ?",
+        ops: ["Aluminium", "Fibre de verre", "Magnésium", "Plastique recyclé"],
+        ans: "Aluminium",
+        exp: "<b>Note :</b> C'était le premier test public pour la technologie ASF avant l'A8.<br><b>Mémo :</b> Spyder 91 = Test de l'Alu."
+    },
+    {
+        q: "Quel concept fut présenté à Detroit en 2000 comme le successeur spirituel de l'Auto Union Type C ?",
+        ops: ["Audi Rosemeyer", "Audi Avus", "Audi Steppenwolf", "Audi Project X"],
+        ans: "Audi Rosemeyer",
+        exp: "<b>Note :</b> Elle n'avait pas de rétroviseurs mais des caméras, une idée visionnaire pour l'époque.<br><b>Mémo :</b> Detroit 2000 = Hommage à Bernd."
+    },
+
+    // --- TECHNOLOGIES DE POINTE ---
+    {
+        q: "Sur le moteur V10 FSI de la R8, quel est l'angle d'ouverture du V ?",
+        ops: ["90 degrés", "72 degrés", "60 degrés", "180 degrés"],
+        ans: "90 degrés",
+        exp: "<b>Technique :</b> Cet angle est idéal pour le centre de gravité, bien que nécessitant des manetons décalés pour l'équilibrage.<br><b>Mémo :</b> 90 = Équilibre de Supercar."
+    },
+    {
+        q: "Quel gaz est utilisé dans les phares Laser de l'Audi R8 LMX pour stabiliser la lumière ?",
+        ops: ["Xénon", "Argon", "Phosphore (convertisseur)", "Néon"],
+        ans: "Phosphore (convertisseur)",
+        exp: "<b>Note :</b> Le laser bleu traverse un convertisseur au phosphore pour devenir un blanc pur non éblouissant.<br><b>Mémo :</b> Laser + Phosphore = Vision nocturne."
+    },
+    {
+        q: "Quel système Audi gère le refroidissement des batteries sur l'e-tron GT lors de charges rapides ?",
+        ops: ["Circuit de glycol inversé", "Pompe à chaleur à CO2", "Plaques de refroidissement gel", "Immersion d'huile"],
+        ans: "Pompe à chaleur à CO2",
+        exp: "<b>Note :</b> Le CO2 est plus efficace que les gaz classiques pour maintenir la batterie sous les 45°C.<br><b>Mémo :</b> CO2 = Fraîcheur électrique."
+    },
+    // --- SUITE DU LOT : SUPER EXPERT (QUESTIONS 26 À 50) ---
+
+    {
+        q: "Quel était le taux de compression inhabituel du moteur 5 cylindres de l'Audi 100 TDI en 1989 ?",
+        ops: ["18.0:1", "20.5:1", "16.5:1", "22.0:1"],
+        ans: "20.5:1",
+        exp: "<b>Technique :</b> Ce taux très élevé pour l'époque permettait une auto-inflammation parfaite malgré l'absence de préchambre.<br><b>Mémo :</b> 20.5 = La pression de la révolution TDI."
+    },
+    {
+        q: "L'Audi Sport Quattro S1 E2 utilisait un système de recirculation d'air (ALS). Quel était son surnom en interne ?",
+        ops: ["Le sifflet", "Umluft (Air circulant)", "Turbo-Boost", "Der Knall (Le Bang)"],
+        ans: "Umluft (Air circulant)",
+        exp: "<b>Note :</b> Ce système maintenait le turbo en rotation à 10 000 tr/min lors des freinages.<br><b>Mémo :</b> Umluft = Le souffle continu."
+    },
+    {
+        q: "Quel composant spécifique du châssis de l'Audi Duo (1989) provenait de la division nautique ?",
+        ops: ["L'hélice de refroidissement", "Le câblage étanche", "Les batteries au gel", "Le moteur électrique"],
+        ans: "Les batteries au gel",
+        exp: "<b>Note :</b> Audi a utilisé des batteries de bateaux car les batteries automobiles de l'époque ne supportaient pas les décharges profondes.<br><b>Mémo :</b> Duo = Énergie marine sur terre."
+    },
+    {
+        q: "En quelle année Audi a-t-il racheté la marque de motos italienne Ducati ?",
+        ops: ["2010", "2012", "2014", "2015"],
+        ans: "2012",
+        exp: "<b>Note :</b> Ce rachat a permis des transferts de compétences sur la combustion haute performance et les matériaux légers.<br><b>Mémo :</b> 2012 = Les deux-roues rejoignent les anneaux."
+    },
+    {
+        q: "Quel était le nom du prototype de 1988 qui a testé pour la première fois le moteur V8 Audi ?",
+        ops: ["Audi V8 Prototype", "Audi 300", "Projet 016", "Audi 100 Plus"],
+        ans: "Projet 016",
+        exp: "<b>Note :</b> Audi voulait s'assurer que le V8 rentrait dans le compartiment moteur de l'Audi 100 sans modifier la structure.<br><b>Mémo :</b> 016 = Le code secret du V8."
+    },
+    {
+        q: "Quelle est la particularité du différentiel central 'Crown Gear' apparu sur la RS5 en 2010 ?",
+        ops: ["Il est électronique", "Il peut envoyer 85% du couple à l'arrière", "Il est à bain d'huile", "Il utilise des aimants"],
+        ans: "Il peut envoyer 85% du couple à l'arrière",
+        exp: "<b>Technique :</b> Plus compact et léger que le Torsen, il offre une répartition beaucoup plus dynamique.<br><b>Mémo :</b> Crown Gear = Couronne de puissance."
+    },
+    {
+        q: "Sur le prototype Audi R18 Le Mans, comment était actionné le turbocompresseur ?",
+        ops: ["Simple turbo fixe", "Géométrie variable électrique", "Bi-turbo séquentiel", "Turbo à gaz d'échappement uniquement"],
+        ans: "Géométrie variable électrique",
+        exp: "<b>Note :</b> Une première en compétition Diesel pour éliminer tout temps de réponse.<br><b>Mémo :</b> R18 = Électricité au service du turbo."
+    },
+    {
+        q: "Quel était le nom de la version limousine ultra-luxueuse de l'Audi 100, vendue uniquement en Chine ?",
+        ops: ["Audi 100 XL", "Hongqi CA7220", "Audi 100 State", "Audi 100 Emperor"],
+        ans: "Hongqi CA7220",
+        exp: "<b>Note :</b> Produite sous licence, elle a assis la domination d'Audi sur le marché officiel chinois.<br><b>Mémo :</b> Hongqi = Le drapeau rouge d'Ingolstadt."
+    },
+    {
+        q: "L'Audi R8 e-tron (2015) détenait un record de production très particulier. Lequel ?",
+        ops: ["La voiture la plus lourde", "Moins de 100 exemplaires produits", "La première Audi à 4 roues directrices", "La recharge en 10 minutes"],
+        ans: "Moins de 100 exemplaires produits",
+        exp: "<b>Note :</b> Vendue environ 1 million d'euros, elle servait surtout de laboratoire technologique roulant.<br><b>Mémo :</b> R8 e-tron = L'oiseau rare."
+    },
+    {
+        q: "Quel ingénieur aérodynamicien a conçu la carrosserie de l'Auto Union Type C Streamline ?",
+        ops: ["Robert Eberan von Eberhorst", "Ferdinand Porsche", "Paul Jaray", "Josef Mickl"],
+        ans: "Josef Mickl",
+        exp: "<b>Note :</b> Mickl travaillait au bureau d'étude Porsche et fut un pionnier des tests en soufflerie.<br><b>Mémo :</b> Mickl = Le maître de l'air."
+    },
+    {
+        q: "Quelle pièce du moteur V10 de la R8 est directement issue de la compétition R10 TDI du Mans ?",
+        ops: ["Le vilebrequin", "Le système d'injection", "Le carter sec", "Les bielles en titane"],
+        ans: "Le carter sec",
+        exp: "<b>Note :</b> Il permet de placer le moteur plus bas et d'assurer la lubrification sous forte force G.<br><b>Mémo :</b> Carter sec = Gravité maîtrisée."
+    },
+    {
+        q: "Comment s'appelle le centre de recherche Audi situé dans la Silicon Valley ?",
+        ops: ["Audi Innovation Lab", "AVRL (Audi Visual Research Lab)", "AERI", "Audi West Coast"],
+        ans: "AVRL (Audi Visual Research Lab)",
+        exp: "<b>Note :</b> C'est ici que sont nés le Virtual Cockpit et les premières interfaces tactiles haptiques.<br><b>Mémo :</b> AVRL = Le futur en Californie."
+    },
+    {
+        q: "Quelle était la fonction du bouton 'Sport' sur le tableau de bord de l'Audi Sport Quattro de route ?",
+        ops: ["Durcir la suspension", "Augmenter la pression de turbo", "Débloquer le différentiel central", "Il n'y avait pas de bouton Sport"],
+        ans: "Il n'y avait pas de bouton Sport",
+        exp: "<b>Note :</b> À l'époque, la puissance était brute et constante, sans cartographies commutables.<br><b>Mémo :</b> Purisme = Pas de boutons."
+    },
+    {
+        q: "Quel est le poids exact du châssis nu (ASF) de la première Audi A2 ?",
+        ops: ["153 kg", "190 kg", "215 kg", "250 kg"],
+        ans: "153 kg",
+        exp: "<b>Note :</b> Un exploit d'ingénierie qui rendait la voiture 40% plus légère que ses concurrentes en acier.<br><b>Mémo :</b> 153 = Le chiffre plume."
+    },
+    {
+        q: "En 1933, quelle innovation Auto Union a présenté au Salon de Berlin ?",
+        ops: ["La première radio de bord", "La suspension avant indépendante", "La boîte de vitesses synchronisée", "Le toit ouvrant panoramique"],
+        ans: "La suspension avant indépendante",
+        exp: "<b>Note :</b> Une révolution pour le confort et la tenue de route face aux essieux rigides.<br><b>Mémo :</b> Berlin 33 = Adieu les secousses."
+    },
+    {
+        q: "Quelle technologie Audi a permis de remporter les 24H du Mans en 2006 avec la R10 ?",
+        ops: ["Le FAP (Filtre à Particules)", "L'injection directe TDI", "Le turbo à géométrie variable", "Tous les trois"],
+        ans: "Tous les trois",
+        exp: "<b>Note :</b> C'était la première fois qu'un moteur Diesel gagnait une course d'endurance majeure.<br><b>Mémo :</b> R10 = Le Diesel roi."
+    },
+    {
+        q: "Quel était le surnom de l'Audi 50, qui est devenue plus tard la Volkswagen Polo ?",
+        ops: ["Projet 08", "Projet K50", "Audi Junior", "La petite Audi"],
+        ans: "Projet K50",
+        exp: "<b>Note :</b> VW a repris le projet pour en faire sa citadine phare car Audi devait rester 'Premium'.<br><b>Mémo :</b> K50 = L'origine de la Polo."
+    },
+    {
+        q: "Quel système audio équipait le concept Audi Avus Quattro en 1991 ?",
+        ops: ["Bose", "Bang & Olufsen", "Revox", "Aucun (pas de radio)"],
+        ans: "Aucun (pas de radio)",
+        exp: "<b>Note :</b> Le concept était une pure étude de style et de motorisation, l'intérieur était minimaliste.<br><b>Mémo :</b> Avus = Le silence de l'alu."
+    },
+    {
+        q: "Quelle est la particularité des jantes de l'Audi RS6 GTO Concept (2020) ?",
+        ops: ["Elles sont en carbone", "Elles sont pleines (Turbofans)", "Elles changent de forme", "Elles sont auto-nettoyantes"],
+        ans: "Elles sont pleines (Turbofans)",
+        exp: "<b>Note :</b> Hommage direct à l'Audi 90 Quattro IMSA GTO qui utilisait ces flasques pour extraire l'air chaud des freins.<br><b>Mémo :</b> Turbofans = Look IMSA."
+    },
+    {
+        q: "Sur l'Audi Quattro de rallye, à quoi servait le cinquième injecteur situé sur le collecteur d'admission ?",
+        ops: ["Refroidir l'air", "Enrichir le mélange en pleine charge", "Démarrage à froid uniquement", "Nettoyer les soupapes"],
+        ans: "Enrichir le mélange en pleine charge",
+        exp: "<b>Technique :</b> Pour éviter la fonte des pistons sous l'énorme pression du turbo, on injectait un surplus de carburant.<br><b>Mémo :</b> 5ème injecteur = Sécurité thermique."
+    },
+    {
+        q: "Quel est le nom de l'architecte qui a conçu l'Audi Museum Mobile à Ingolstadt ?",
+        ops: ["Gunter Henn", "Norman Foster", "Zaha Hadid", "Jean Nouvel"],
+        ans: "Gunter Henn",
+        exp: "<b>Note :</b> Le bâtiment circulaire symbolise les quatre anneaux et l'idée de mouvement perpétuel.<br><b>Mémo :</b> Henn = L'architecte des anneaux."
+    },
+    {
+        q: "Quel composant de la suspension de l'Audi RS e-tron GT est fabriqué à partir de chutes de carbone ?",
+        ops: ["Les triangles de suspension", "La barre anti-rapprochement", "Le support de batterie", "Les bras de suspension arrière"],
+        ans: "La barre anti-rapprochement",
+        exp: "<b>Note :</b> Audi utilise des techniques de recyclage pour les pièces structurelles non visibles.<br><b>Mémo :</b> Carbone recyclé = Performance durable."
+    },
+    {
+        q: "Comment s'appelle le test de torture interne pour les moteurs Audi simulant 15 ans d'utilisation en 6 mois ?",
+        ops: ["Test INKA", "Test Endurance Plus", "Projet Marathon", "Audi Stress Test"],
+        ans: "Test INKA",
+        exp: "<b>Note :</b> 'Ingolstädter Korrosions- und Alternsprüfung'. Il inclut des passages dans des chambres de sel et de froid extrême.<br><b>Mémo :</b> INKA = Le supplice d'Ingolstadt."
+    },
+    {
+        q: "Quelle était la largeur de voie de l'Audi Sport Quattro S1 par rapport à une Quattro standard ?",
+        ops: ["+20 mm", "+50 mm", "+80 mm", "Identique"],
+        ans: "+80 mm",
+        exp: "<b>Note :</b> Cet élargissement massif permettait une stabilité accrue dans les virages rapides du Groupe B.<br><b>Mémo :</b> +80 = Assise de monstre."
+    },
+    {
+        q: "Quel est le dernier modèle Audi à avoir utilisé des poignées de portes 'frigo' (que l'on tire vers le haut) ?",
+        ops: ["Audi 80 (B4)", "Audi 100 (C3)", "Audi V8", "Audi Cabriolet"],
+        ans: "Audi 100 (C3)",
+        exp: "<b>Note :</b> Elles furent remplacées par les poignées à déclenchement horizontal pour des raisons de sécurité en cas de retournement.<br><b>Mémo :</b> C3 = La fin des poignées frigo."
+    }
 ];
 
 let currentIdx = 0;
