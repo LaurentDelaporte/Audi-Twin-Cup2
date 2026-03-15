@@ -1,0 +1,31 @@
+# 🏎️ Audi Ultimate Quiz : Vorsprung durch Technik
+
+![Audi Banner](https://img.shields.io/badge/Brand-Audi-black?style=for-the-badge&logo=audi&logoColor=white)
+![Status](https://img.shields.io/badge/Niveau-Expert-bb0a30?style=for-the-badge)
+
+## 🏛️ Présentation
+Bienvenue dans l'expérience interactive ultime dédiée à la marque aux quatre anneaux. Ce projet est une célébration de l'ingénierie allemande, de l'épopée du rallye Groupe B jusqu'aux défis futurs de la Formule 1 en 2026.
+
+Conçu avec une exigence de **français irréprochable**, ce quiz ne se contente pas d'évaluer vos connaissances ; il vous instruit à travers des notes historiques et des moyens mnémotechniques précis.
+
+## 🚀 Fonctionnalités
+* **50 Questions d'Expertise** : Un parcours divisé par niveaux de difficulté (Initié, Passionné, Expert).
+* **Chronomètre Digital Haute Performance** : Un design inspiré des compteurs de course Audi Sport.
+* **Pédagogie Intégrée** : Chaque réponse dévoile un secret d'expert ou une astuce de mémorisation.
+* **Interface "Audi Pure"** : Une esthétique minimaliste respectant la charte visuelle de la marque (Noir Profond, Blanc Satin, Rouge Audi).
+
+## 🛠️ Installation et Déploiement
+Le projet est développé en technologies web pures (HTML5, CSS3, JavaScript) pour une accessibilité maximale.
+
+1.  **Cloner le dépôt** : `git clone https://github.com/votre-pseudo/audi-quiz.git`
+2.  **Lancer le jeu** : Ouvrez simplement le fichier `index.html` dans votre navigateur.
+3.  **Hébergement** : Compatible à 100% avec **GitHub Pages**.
+
+## 📈 Évolutions Futures
+Le développement de ce projet reste **ouvert**. Les prochaines itérations incluront :
+- [ ] Système de sauvegarde des meilleurs scores (Local Storage).
+- [ ] Effets sonores immersifs (moteurs V10, 5 cylindres, e-tron).
+- [ ] Mode "Carrière" avec déblocage de modèles historiques.
+
+---
+*Ce projet est une réalisation indépendante. Audi® et les quatre anneaux sont des marques déposées de AUDI AG.*
